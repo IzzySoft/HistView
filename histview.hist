@@ -37,7 +37,8 @@ v0.1.1 (05.01.2004)
   in the first line of the output
 + added stylesheet file
 
-v0.1.2
+v0.1.2 (24.01.2004)
 -------------------
 ! pline() sometimes broke with an error message
 + added method add_mark(): now you can add your own (user-defined) marks
++ updated api reference
