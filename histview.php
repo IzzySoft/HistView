@@ -24,7 +24,7 @@
  $title = "History for $prog";
  echo "<HTML><HEAD>\n"
     . ' <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-15"/>'."\n"
-    . ' <LINK REL="stylesheet" TYPE="text/css" HREF="main.css">'."\n"
+    . ' <LINK REL="stylesheet" TYPE="text/css" HREF="histview.css">'."\n"
     . " <TITLE>$title</TITLE>\n"
     . "</HEAD><BODY>\n<H2>$title</H2>\n";
  echo $history."\n</BODY></HTML>\n";

@@ -32,3 +32,4 @@ v0.1.1
   with a (numeric) version number (e.g. starting with "verbose")
 + date of last modification for the processed history file is now displayed
   in the first line of the output
++ added stylesheet file
