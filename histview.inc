@@ -31,6 +31,7 @@ class histview {
   var $ichange = "<IMG SRC='/icons/image1.gif' BORDER='0'>";
   var $ibug    = "<IMG SRC='/icons/alert.red.gif' BORDER='0'>";
 
+  var $lastchange;
   var $input   = array(); # content of input file
   var $output  = array(); # HTML output
   var $version = array(); # array 1..n of objects w/ properties num,
@@ -42,6 +43,7 @@ class histview {
    * @param string infile input file name
    */
   function histview($infile) {
+    $this->lastchange = "Last modified: ".date("F d Y",filemtime($infile));
     $this->input = file($infile);
     $this->idx->ver  = 0;
     $this->idx->mark = 0;
@@ -149,7 +151,9 @@ class histview {
    * @return array HTML formatted history
    */
   function out() {
-    $output = "<TABLE WIDTH='95%' BORDER='0' ALIGN='center'>\n";
+    $output = "<DIV ALIGN='center'><FONT SIZE='-2'>" . $this->lastchange
+            . "</FONT></DIV>\n"
+            . "<TABLE WIDTH='95%' BORDER='0' ALIGN='center'>\n";
     $vers = count($this->version);
     for ($i=1;$i<=$vers;++$i) {
       $output .= " <TR><TH COLSPAN=2>".$this->version[$i]->num."</TH></TR>\n";;

@@ -30,3 +30,5 @@ v0.1.1
 + added download link
 ! line was omitted when starting with a version mark but not continuing
   with a (numeric) version number (e.g. starting with "verbose")
++ date of last modification for the processed history file is now displayed
+  in the first line of the output
