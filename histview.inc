@@ -119,7 +119,9 @@ class histview {
                        $this->idx->mark = 0;
                        $this->version[$this->idx->ver]->num = $tline;
                        return TRUE;
-                     }
+                     } else {
+		       $this->version[$this->idx->ver]->changes[$this->idx->mark]->content .= " $tline";
+		     }
                      break;
       case $this->plus   : ++$this->idx->mark;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->iplus;
