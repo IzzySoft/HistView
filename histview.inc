@@ -18,7 +18,8 @@
  * @copyright (c) 2003 by Itzchak Rehberg and IzzySoft
  */
 class histview {
-  var $version = "0.1.0";
+  var $hv_version = "0.1.0";
+  var $download= "http://www.izzysoft.de/ftp/net/div/izzysoft/hv.php";
   var $plus   = "+";
   var $minus  = "-";
   var $change = "*";
@@ -157,7 +158,8 @@ class histview {
       }
     }
     $output .= " <TR><TD COLSPAN='2'><DIV ALIGN='center'><FONT SIZE='-2'>"
-            .  "Created by HistView v".$this->version." &copy; ".$this->copy
+            .  "Created by <A HREF='".$this->download."'>HistView</A> v"
+            .  $this->hv_version." &copy; ".$this->copy
             .  "</FONT></DIV></TD></TR>\n";
     $output .= "</TABLE>\n";
     return $output;
