@@ -13,12 +13,12 @@
  /* $Id$ */
 
 /** Processing a history file and prepare it for HTML output
- * @package webtools
  * @class histview
  * @author Izzy (devel@izzysoft.de)
  * @copyright (c) 2003 by Itzchak Rehberg and IzzySoft
  */
 class histview {
+  var $version = "0.1.0";
   var $plus   = "+";
   var $minus  = "-";
   var $change = "*";
@@ -37,13 +37,16 @@ class histview {
   var $idx;               # index 1..n of last elements: object(ver,mark)
 
   /** Create an instance and read the input file into the internal array
-   * @constructor histview
+   * @constructor histv
    * @param string infile input file name
    */
   function histview($infile) {
     $this->input = file($infile);
     $this->idx->ver  = 0;
     $this->idx->mark = 0;
+    $this->copy    = "2003 by <A HREF='http://www.qumran.org/homes/izzy/' TARGET='_blank'>"
+                   . "Itzchak Rehberg</A> &amp; <A HREF='http://www.izzysoft.de/' "
+                   . "TARGET='_blank'>IzzySoft</A>";
   }
 
   /** Process the input file
@@ -153,6 +156,9 @@ class histview {
                 .  "     <TD VALIGN='middle'>".$this->version[$i]->changes[$k]->content."</TD></TR>\n";
       }
     }
+    $output .= " <TR><TD COLSPAN='2'><DIV ALIGN='center'><FONT SIZE='-2'>"
+            .  "Created by HistView v".$this->version." &copy; ".$this->copy
+            .  "</FONT></DIV></TD></TR>\n";
     $output .= "</TABLE>\n";
     return $output;
   }
