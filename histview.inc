@@ -18,7 +18,7 @@
  * @copyright (c) 2003 by Itzchak Rehberg and IzzySoft
  */
 class histview {
-  var $hv_version = "0.1.0";
+  var $hv_version = "0.1.1";
   var $download= "http://www.izzysoft.de/ftp/net/div/izzysoft/hv.php";
   var $plus   = "+";
   var $minus  = "-";
