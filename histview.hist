@@ -21,4 +21,5 @@ v0.1.0 (15.12.2003)
 ! if an entry was spread over multiple lines, we missed a space between the
   concatenated strings
 + added method set_mark() to replace the default identifier marks
++ added copyright info to output
 + first release
