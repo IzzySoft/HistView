@@ -141,7 +141,8 @@ class histview {
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->ibug;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                      return TRUE; break;
-      default      : $this->version[$this->idx->ver]->changes[$this->idx->mark]->content .= " $tline";
+      default      : if(isset($this->version[$this->idx->mark]))
+                     $this->version[$this->idx->ver]->changes[$this->idx->mark]->content .= " $tline";
     }
   }
 

@@ -36,3 +36,7 @@ v0.1.1 (05.01.2004)
 + date of last modification for the processed history file is now displayed
   in the first line of the output
 + added stylesheet file
+
+v0.1.2
+-------------------
+! pline() sometimes broke with an error message
