@@ -1,5 +1,8 @@
 $Id$
 
+History for HistView
+====================
+
 v0.0.1 (initial version)
 ------------------------
 * reads in the history file and outputs a table. Everything plain text.
