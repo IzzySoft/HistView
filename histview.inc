@@ -156,7 +156,7 @@ class histview {
             . "<TABLE WIDTH='95%' BORDER='0' ALIGN='center'>\n";
     $vers = count($this->version);
     for ($i=1;$i<=$vers;++$i) {
-      $output .= " <TR><TH COLSPAN=2>".$this->version[$i]->num."</TH></TR>\n";;
+      $output .= " <TR><TH COLSPAN='2'>".$this->version[$i]->num."</TH></TR>\n";;
       $chgs = count($this->version[$i]->changes);
       for ($k=1;$k<=$chgs;++$k) {
         $output .= " <TR><TD VALIGN='middle'>".$this->version[$i]->changes[$k]->mark."</TD>\n"
