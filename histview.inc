@@ -47,7 +47,7 @@ class histview {
     $this->input = file($infile);
     $this->idx->ver  = 0;
     $this->idx->mark = 0;
-    $this->copy    = "2003 by <A HREF='http://www.qumran.org/homes/izzy/' TARGET='_blank'>"
+    $this->copy    = "2003-2004 by <A HREF='http://www.qumran.org/homes/izzy/' TARGET='_blank'>"
                    . "Itzchak Rehberg</A> &amp; <A HREF='http://www.izzysoft.de/' "
                    . "TARGET='_blank'>IzzySoft</A>";
   }
