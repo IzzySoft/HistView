@@ -1,0 +1,24 @@
+$Id$
+
+v0.0.1 (initial version)
+------------------------
+* reads in the history file and outputs a table. Everything plain text.
+
+v0.0.2 (10.12.2003)
+-------------------
+* replaced marks by icons (picked from the Apache distributed in /icons/)
+* some cosmetical changes
+
+v0.0.3 (12.12.2003)
+-------------------
++ added method process() - now the input is not processed from the
+  constructor but on demand, allowing changes of settings (see below)
++ added method set_icon() - now default icon definition can be overridden
+  and thus default icons can be replaced
+
+v0.1.0 (15.12.2003)
+-------------------
+! if an entry was spread over multiple lines, we missed a space between the
+  concatenated strings
++ added method set_mark() to replace the default identifier marks
++ first release
