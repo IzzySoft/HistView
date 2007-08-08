@@ -2,7 +2,7 @@
 
 <HTML>
 <HEAD>
-<TITLE>HistView</TITLE>
+<TITLE>HistView Api Doc</TITLE>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </HEAD>
 <BODY BGCOLOR="white">
@@ -11,120 +11,174 @@
 <td COLSPAN=2 BGCOLOR="#EEEEFF">
 <em><b>HistView Api Doc</b></em></td>
 </tr>
-<tr><td VALIGN="top"><font SIZE="-2">SUMMARY: &nbsp;FIELD&nbsp;|&nbsp;<A HREf="#_section_constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREf="#_section_method_summary">METHOD</A></font></td>
-<td VALIGN="top"><font SIZE="-2">DETAIL: &nbsp;FIELD&nbsp;|&nbsp;<A HREf="#_section_constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREf="#_section_method_detail">METHOD</A></font></td>
+<tr><td VALIGN="top"><font SIZE="-2">SUMMARY: &nbsp;FIELD&nbsp;|&nbsp;<A HREF="#_section_constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#_section_method_summary">METHOD</A></font></td>
+<td VALIGN="top"><font SIZE="-2">DETAIL: &nbsp;FIELD&nbsp;|&nbsp;<A HREF="#_section_constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#_section_method_detail">METHOD</A></font></td>
 </tr>
-</table><hr>
-<H2><FONT SIZE="-1">webtools</FONT><BR>Class histview</H2>
+</table><HR>
+<H2><FONT SIZE="-1">Api</FONT><BR>
+Class histview</H2>
 
 <HR>
 <DL>
 <DT>class <B>histview</B><P>Processing a history file and prepare it for HTML output</P>
 <DL><DT><B>Authors:</B></DT><DD>Izzy (devel@izzysoft.de)</DD></DL>
-<DL><DT><B>Copyright:</B></DT><DD>(c) 2003 by Itzchak Rehberg and IzzySoft</DD></DL>
+<DL><DT><B>Version:</B></DT><DD>$Revision$ $Date$</DD></DL>
+<DL><DT><B>Copyright:</B></DT><DD>(c) 2003-2007 by Itzchak Rehberg and IzzySoft</DD></DL>
 </DL>
 <HR>
-<P><A NAME="_section_constructor_summary"><TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<P><A NAME="_section_constructor_summary"></A><TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
 <TR BGCOLOR="#CCCCFF">
 <TD COLSPAN=2><FONT SIZE="+2"><B>Constructor Summary</B></FONT></TD>
 </TR>
-<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>void </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><B><A HREF="#histview()">histview</A></B>(string infile)</B></CODE><BR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>void </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#histview()">histview</A></b>(string $infile, [string $basename])</CODE><BR>
 Create an instance and read the input file into the internal array</TD></TR>
 </TABLE></P>
-<P><A NAME="_section_method_summary"><TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<P><A NAME="_section_method_summary"></A><TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
 <TR BGCOLOR="#CCCCFF">
 <TD COLSPAN=2><FONT SIZE="+2"><B>Method Summary</B></FONT></TD>
 </TR>
-<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><B><A HREF="#add_mark()">add_mark</A></B>(string name, string symbol, string icon</B></CODE><BR>
-Add another (user-defined) mark to the set</TD></TR>
-<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>array </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><B><A HREF="#out()">out</A></B>()</B></CODE><BR>
-Generate the output array</TD></TR>
-<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><B><A HREF="#pline()">pline</A></B>(string line)</B></CODE><BR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#add_mark()">add_mark</A></b>(string $name, string $symbol, string $icon)</CODE><BR>
+Add another mark to the set</TD></TR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>private string </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#getdlurl()">getdlurl</A></b>(string $type)</CODE><BR>
+Check whether there is a file to download - and create URL if any</TD></TR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>string </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#out()">out</A></b>()</CODE><BR>
+Generate the output page content</TD></TR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>private boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#pline()">pline</A></b>(string $line)</CODE><BR>
 Process a single line from the input file</TD></TR>
-<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><B><A HREF="#process()">process</A></B>()</B></CODE><BR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#process()">process</A></b>()</CODE><BR>
 Process the input file</TD></TR>
-<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><B><A HREF="#set_icon()">set_icon</A></B>([string plus], [string minus], [string change], [string bug])</B></CODE><BR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>void </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#set_basedir()">set_basedir</A></b>(string $type, string $dir)</CODE><BR>
+Override base URLs for archives.</TD></TR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#set_icon()">set_icon</A></b>([string $plus], [string $minus], [string $change], [string $bug], [string $tar], [string $deb], [string $rpm])</CODE><BR>
 Override default icon settings
   icons can either be a character/string or a complete IMG tag</TD></TR>
-<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><B><A HREF="#set_mark()">set_mark</A></B>([string plus], [string minus], [string change], [string bug], [string ver])</B></CODE><BR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>boolean </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#set_mark()">set_mark</A></b>([string $plus], [string $minus], [string $change], [string $bug], [string $ver])</CODE><BR>
 Override default identifier mark settings
   Identifier marks are the characters used to identify the changes, such
   as a "+" for a new feature or a "!" for a bug</TD></TR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>void </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#set_max_relnum()">set_max_relnum</A></b>(integer $relnum)</CODE><BR>
+Set the maximum release number
+  To take our example from set_basedir again (dummy-0.</TD></TR>
+<TR BGCOLOR="white"><TD WIDTH="1%" VALIGN="top"><FONT SIZE="-1"><CODE>void </CODE></FONT></TD><TD ALIGN="left" VALIGN="top"><CODE><b><A HREF="#set_relname()">set_relname</A></b>(string $relname)</CODE><BR>
+Set the release extension for *.</TD></TR>
 </TABLE></P>
-<A NAME="_section_constructor_detail"><P><TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<A NAME="_section_constructor_detail"></A><P><TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
 <TR BGCOLOR="#CCCCFF"><TD COLSPAN=1><FONT SIZE="+2"><B>Constructor Detail</B></FONT></TD>
 </TR></TABLE><BR>
-<A NAME="histview()"><H3>histview()</H3>
+<A NAME="histview()"></A><H3>histview()</H3>
 <PRE>
-void <B>histview</B>(string infile)</PRE>
+void <b>histview</b>(string $infile, [string $basename])</PRE>
 <DL><DD><P>Create an instance and read the input file into the internal array</P>
-<DL><DT><B>Parameters:</B></DT><DD><CODE>infile</CODE> - input  file name</DD></DL>
+<DL><DT><B>Parameters:</B></DT><DD><code>infile</code> - input  file name<BR>
+<code>basename</code> - basename  for files (e.g. "histview" for histview-0.1.3-izzy1.noarch.rpm)</DD></DL>
 </DD></DL><HR>
-<A NAME="_section_method_detail"><P><TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<A NAME="_section_method_detail"></A><P><TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
 <TR BGCOLOR="#CCCCFF"><TD COLSPAN=1><FONT SIZE="+2"><B>Method Detail</B></FONT></TD>
 </TR></TABLE><BR>
-<A NAME="add_mark()"><H3>add_mark()</H3>
+<A NAME="add_mark()"></A><H3>add_mark()</H3>
 <PRE>
-boolean <B>add_mark</B>(string name, string symbol, string icon)</PRE>
-<DL><DD><P>Add another (user-defined) mark to the set</P>
-<DL><DT><B>Parameters:</B></DT><DD><CODE>name</CODE> - Name of the mark<BR>
-<CODE>symbol</CODE> - (One-letter) symbol used in the history file<BR>
-<CODE>icon</CODE> - Icon to use in the HTML file</DL>
+boolean <b>add_mark</b>(string $name, string $symbol, string $icon)</PRE>
+<DL><DD><P>Add another mark to the set</P>
+<DL><DT><B>Parameters:</B></DT><DD><code>name</code> - unique  name for the mark<BR>
+<code>symbol</code> - one  character like '!' for a bug<BR>
+<code>icon</code> - complete  image tag or string to display instead of the symbol</DD></DL>
 <DL><DT><B>Returns:</B></DT><DD>success</DD></DL>
 </DD></DL><HR>
-<A NAME="out()"><H3>out()</H3>
+<A NAME="getdlurl()"></A><H3>getdlurl()</H3>
 <PRE>
-array <B>out</B>()</PRE>
-<DL><DD><P>Generate the output array</P>
+private string <b>getdlurl</b>(string $type)</PRE>
+<DL><DD><P>Check whether there is a file to download - and create URL if any</P>
+<DL><DT><B>Parameters:</B></DT><DD><code>type</code> - Type  (one of tar, deb, rpm)</DD></DL>
+<DL><DT><B>Returns:</B></DT><DD>href  complete href string if found, empty string else</DD></DL>
+</DD></DL><HR>
+<A NAME="out()"></A><H3>out()</H3>
+<PRE>
+string <b>out</b>()</PRE>
+<DL><DD><P>Generate the output page content</P>
 <DL><DT><B>Returns:</B></DT><DD>HTML  formatted history</DD></DL>
 </DD></DL><HR>
-<A NAME="pline()"><H3>pline()</H3>
+<A NAME="pline()"></A><H3>pline()</H3>
 <PRE>
-boolean <B>pline</B>(string line)</PRE>
+private boolean <b>pline</b>(string $line)</PRE>
 <DL><DD><P>Process a single line from the input file</P>
-<DL><DT><B>Parameters:</B></DT><DD><CODE>line</CODE> - </DD></DL>
+<DL><DT><B>Parameters:</B></DT><DD><code>line</code> - the  input line to parse</DD></DL>
 <DL><DT><B>Returns:</B></DT><DD>success</DD></DL>
 </DD></DL><HR>
-<A NAME="process()"><H3>process()</H3>
+<A NAME="process()"></A><H3>process()</H3>
 <PRE>
-boolean <B>process</B>()</PRE>
+boolean <b>process</b>()</PRE>
 <DL><DD><P>Process the input file</P>
 <DL><DT><B>Returns:</B></DT><DD>success</DD></DL>
 </DD></DL><HR>
-<A NAME="set_icon()"><H3>set_icon()</H3>
+<A NAME="set_basedir()"></A><H3>set_basedir()</H3>
 <PRE>
-boolean <B>set_icon</B>([string plus], [string minus], [string change], [string bug])</PRE>
+void <b>set_basedir</b>(string $type, string $dir)</PRE>
+<DL><DD><P>Override base URLs for archives. With $type='base' set the string to cut
+  of to leave the download URL. Example: Your files are somewhere below
+  /var/www/files/download, and your servers document root is /var/www, so
+  you would specify "/var/www" here. If your files reside outside the
+  servers document root, say below /var/ftp/download, you should create a
+  directory alias called "/ftp/" pointing to /var/ftp, and specify "/var"
+  here.</P>
+<DL><DT><B>Parameters:</B></DT><DD><code>type</code> - tar,  deb, rpm or base<BR>
+<code>dir</code> - the  directory for this type</DD></DL>
+</DD></DL><HR>
+<A NAME="set_icon()"></A><H3>set_icon()</H3>
+<PRE>
+boolean <b>set_icon</b>([string $plus], [string $minus], [string $change], [string $bug], [string $tar], [string $deb], [string $rpm])</PRE>
 <DL><DD><P>Override default icon settings
   icons can either be a character/string or a complete IMG tag</P>
-<DL><DT><B>Parameters:</B></DT><DD><CODE>plus</CODE> - FeatureAdd  Icon<BR>
-<CODE>minus</CODE> - Removed  stuff Icon<BR>
-<CODE>change</CODE> - Changed  stuff Icon<BR>
-<CODE>bug</CODE> - BugFix  Icon</DD></DL>
+<DL><DT><B>Parameters:</B></DT><DD><code>plus</code> - FeatureAdd  Icon<BR>
+<code>minus</code> - Removed  stuff Icon<BR>
+<code>change</code> - Changed  stuff Icon<BR>
+<code>bug</code> - BugFix  Icon<BR>
+<code>tar</code> - Tarball  Icon<BR>
+<code>deb</code> - Debian  Icon<BR>
+<code>rpm</code> - RPM  Icon</DD></DL>
 <DL><DT><B>Returns:</B></DT><DD>success</DD></DL>
 </DD></DL><HR>
-<A NAME="set_mark()"><H3>set_mark()</H3>
+<A NAME="set_mark()"></A><H3>set_mark()</H3>
 <PRE>
-boolean <B>set_mark</B>([string plus], [string minus], [string change], [string bug], [string ver])</PRE>
+boolean <b>set_mark</b>([string $plus], [string $minus], [string $change], [string $bug], [string $ver])</PRE>
 <DL><DD><P>Override default identifier mark settings
   Identifier marks are the characters used to identify the changes, such
   as a "+" for a new feature or a "!" for a bug</P>
-<DL><DT><B>Parameters:</B></DT><DD><CODE>plus</CODE> - FeatureAdd  mark<BR>
-<CODE>minus</CODE> - Removed  stuff mark<BR>
-<CODE>change</CODE> - Changed  stuff mark<BR>
-<CODE>bug</CODE> - BugFix  mark<BR>
-<CODE>ver</CODE> - Version  mark</DD></DL>
+<DL><DT><B>Parameters:</B></DT><DD><code>plus</code> - FeatureAdd  mark<BR>
+<code>minus</code> - Removed  stuff mark<BR>
+<code>change</code> - Changed  stuff mark<BR>
+<code>bug</code> - BugFix  mark<BR>
+<code>ver</code> - Version  mark</DD></DL>
 <DL><DT><B>Returns:</B></DT><DD>success</DD></DL>
+</DD></DL><HR>
+<A NAME="set_max_relnum()"></A><H3>set_max_relnum()</H3>
+<PRE>
+void <b>set_max_relnum</b>(integer $relnum)</PRE>
+<DL><DD><P>Set the maximum release number
+  To take our example from set_basedir again (dummy-0.1.2-johnny3.noarch.rpm),
+  the relnum of that package is "3" (the number immediately following the
+  release extension). To find the latest package, histview would "replace"
+  this part by $i, counting down from max_relnum to 0 until it finds a file.</P>
+<DL><DT><B>Parameters:</B></DT><DD><code>relnum</code> - max  release number to check for</DD></DL>
+</DD></DL><HR>
+<A NAME="set_relname()"></A><H3>set_relname()</H3>
+<PRE>
+void <b>set_relname</b>(string $relname)</PRE>
+<DL><DD><P>Set the release extension for *.deb/*.rpm
+  For the fictive package dummy-0.1.2-johnny3.noarch.rpm this would be "johnny"</P>
+<DL><DT><B>Parameters:</B></DT><DD><code>relname</code> - extension  to use</DD></DL>
 </DD></DL><HR>
 <table BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0">
 <tr>
 <td COLSPAN=2 BGCOLOR="#EEEEFF"><em><b>HistView Api Doc</b></em></td>
 </tr>
-<tr><td VALIGN="top"><font SIZE="-2">SUMMARY: &nbsp;FIELD&nbsp;|&nbsp;<A HREf="#_section_constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREf="#_section_method_summary">METHOD</A></font></td>
-<td VALIGN="top"><font SIZE="-2">DETAIL: &nbsp;FIELD&nbsp;|&nbsp;<A HREf="#_section_constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREf="#_section_method_detail">METHOD</A></font></td>
+<tr><td VALIGN="top"><font SIZE="-2">SUMMARY: &nbsp;FIELD&nbsp;|&nbsp;<A HREF="#_section_constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#_section_method_summary">METHOD</A></font></td>
+<td VALIGN="top"><font SIZE="-2">DETAIL: &nbsp;FIELD&nbsp;|&nbsp;<A HREF="#_section_constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#_section_method_detail">METHOD</A></font></td>
 </tr>
-</table><hr>
-<P><FONT SIZE="-1">This document was generated by <A HREF="http://www.arakhne.org/tools/phpdocgen/" target="_top">phpdocgen 0.13</A>.<BR>
-Copyright &copy; 2002 <A HREF="mailto:galland@arakhne.org">Stéphane Galland</a> (under the <A HREf="http://www.gnu.org/copyleft/gpl.html" target="_top">GNU Public License</A>)</font></P>
+</table>
+<HR>
+<P><FONT SIZE="-1">This document was generated by <A HREF="http://www.arakhne.org/tools/phpdocgen/" target="_top">phpdocgen 0.16</A>.<BR>
+Copyright &copy; 2002-03 <A HREF="mailto:galland@arakhne.prg">Stéphane GALLAND</A> (under the <A HREF="http://www.gnu.org/copyleft/gpl.html" target="_top">GNU General Public License</A>)</FONT>
+</P>
 
 </BODY>
 </HTML>
