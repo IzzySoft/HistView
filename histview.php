@@ -1,6 +1,6 @@
 <?
  #############################################################################
- # HistView Client                               (c) 2003 by Itzchak Rehberg #
+ # HistView Client                          (c) 2003-2007 by Itzchak Rehberg #
  # written by Itzchak Rehberg <devel@izzysoft.de>                            #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
@@ -14,11 +14,22 @@
 
  /* $Id$ */
  
+ $prog = $_REQUEST["prog"];
  if (empty($prog)) $prog = "HistView";
  
  include("histview.inc");
  $file = strtolower($prog).".hist";
+ # Simple method, no download links to provide:
  $hv = new histview($file);
+ # Providing download links:
+ #$hv = new histview($file,strtolower($prog));
+ #$hv->set_icon("","","","","<IMG SRC='icons/tgz.png' BORDER='0'>","<IMG SRC='icons/deb.png' BORDER='0'>","<IMG SRC='icons/rpm.png' BORDER='0'>");
+ #$hv->set_basedir("base","/var");
+ #$hv->set_basedir("tar","/var/ftp/downloads");
+ #$hv->set_basedir("deb","/var/repo/debian");
+ #$hv->set_basedir("rpm","/var/repo/redhat/RPMS.dist");
+ #$hv->set_relname("johnny");
+
  $hv->process();
  $history = $hv->out();
  $title = "History for $prog";

@@ -3,29 +3,16 @@ $Id$
 History for HistView
 ====================
 
-v0.0.1 (initial version)
-------------------------
-* reads in the history file and outputs a table. Everything plain text.
-
-v0.0.2 (10.12.2003)
+v0.1.3
 -------------------
-* replaced marks by icons (picked from the Apache distributed in /icons/)
-* some cosmetical changes
++ automatically add download links for *.tar.gz, *.deb and *.rpm if files
+  exist for a given version in the configured directories
 
-v0.0.3 (12.12.2003)
+v0.1.2 (24.01.2004)
 -------------------
-+ added method process() - now the input is not processed from the
-  constructor but on demand, allowing changes of settings (see below)
-+ added method set_icon() - now default icon definition can be overridden
-  and thus default icons can be replaced
-
-v0.1.0 (15.12.2003)
--------------------
-! if an entry was spread over multiple lines, we missed a space between the
-  concatenated strings
-+ added method set_mark() to replace the default identifier marks
-+ added copyright info to output
-+ first release
+! pline() sometimes broke with an error message
++ added method add_mark(): now you can add your own (user-defined) marks
++ updated api reference
 
 v0.1.1 (05.01.2004)
 -------------------
@@ -37,8 +24,26 @@ v0.1.1 (05.01.2004)
   in the first line of the output
 + added stylesheet file
 
-v0.1.2 (24.01.2004)
+v0.1.0 (15.12.2003)
 -------------------
-! pline() sometimes broke with an error message
-+ added method add_mark(): now you can add your own (user-defined) marks
-+ updated api reference
+! if an entry was spread over multiple lines, we missed a space between the
+  concatenated strings
++ added method set_mark() to replace the default identifier marks
++ added copyright info to output
++ first release
+
+v0.0.3 (12.12.2003)
+-------------------
++ added method process() - now the input is not processed from the
+  constructor but on demand, allowing changes of settings (see below)
++ added method set_icon() - now default icon definition can be overridden
+  and thus default icons can be replaced
+
+v0.0.2 (10.12.2003)
+-------------------
+* replaced marks by icons (picked from the Apache distributed in /icons/)
+* some cosmetical changes
+
+v0.0.1 (initial version)
+------------------------
+* reads in the history file and outputs a table. Everything plain text.
