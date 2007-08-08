@@ -13,9 +13,11 @@
  /* $Id$ */
 
 /** Processing a history file and prepare it for HTML output
+ * @package Api
  * @class histview
  * @author Izzy (devel@izzysoft.de)
  * @copyright (c) 2003-2007 by Itzchak Rehberg and IzzySoft
+ * @version $Revision$ $Date$
  */
 class histview {
   var $hv_version = "0.1.3";
@@ -51,9 +53,9 @@ class histview {
   var $idx;               # index 1..n of last elements: object(ver,mark)
 
   /** Create an instance and read the input file into the internal array
-   * @constructor histv
+   * @constructor histview
    * @param string infile input file name
-   * @param optional basename basename for files (e.g. "histview" for histview-0.1.3-izzy1.noarch.rpm)
+   * @param optional string basename basename for files (e.g. "histview" for histview-0.1.3-izzy1.noarch.rpm)
    */
   function histview($infile,$name="") {
     if (!empty($name)) $this->basename = $name;
@@ -67,8 +69,7 @@ class histview {
   }
 
   /** Process the input file
-   * @class histview
-   * @method process
+   * @method public process
    * @return boolean success
    */
   function process() {
@@ -80,8 +81,7 @@ class histview {
 
   /** Override default icon settings
    *  icons can either be a character/string or a complete IMG tag
-   * @class histview
-   * @method set_icon
+   * @method public set_icon
    * @param optional string plus FeatureAdd Icon
    * @param optional string minus Removed stuff Icon
    * @param optional string change Changed stuff Icon
@@ -105,7 +105,7 @@ class histview {
    *  servers document root, say below /var/ftp/download, you should create a
    *  directory alias called "/ftp/" pointing to /var/ftp, and specify "/var"
    *  here.
-   * @method set_basedir
+   * @method public set_basedir
    * @param string type tar, deb, rpm or base
    * @param string dir the directory for this type
    */
@@ -120,8 +120,8 @@ class histview {
 
   /** Set the release extension for *.deb/*.rpm
    *  For the fictive package dummy-0.1.2-johnny3.noarch.rpm this would be "johnny"
-   * @method set_relname
-   * @param string relname
+   * @method public set_relname
+   * @param string relname extension to use
    */
   function set_relname($relname) {
     $this->relname = $relname;
@@ -132,8 +132,8 @@ class histview {
    *  the relnum of that package is "3" (the number immediately following the
    *  release extension). To find the latest package, histview would "replace"
    *  this part by $i, counting down from max_relnum to 0 until it finds a file.
-   * @method set_max_relnum
-   * @parameter integer relnum
+   * @method public set_max_relnum
+   * @param integer relnum max release number to check for
    */
   function set_max_relnum($num) {
   }
@@ -141,8 +141,7 @@ class histview {
   /** Override default identifier mark settings
    *  Identifier marks are the characters used to identify the changes, such
    *  as a "+" for a new feature or a "!" for a bug
-   * @class histview
-   * @method set_mark
+   * @method public set_mark
    * @param optional string plus FeatureAdd mark
    * @param optional string minus Removed stuff mark
    * @param optional string change Changed stuff mark
@@ -158,11 +157,10 @@ class histview {
   }
 
   /** Add another mark to the set
-   * @class histview
-   * @method add_mark
-   * @param string name
-   * @param string symbol
-   * @param string icon
+   * @method public add_mark
+   * @param string name unique name for the mark
+   * @param string symbol one character like '!' for a bug
+   * @param string icon complete image tag or string to display instead of the symbol
    * @return boolean success
    */
   function add_mark($name,$symbol,$icon) {
@@ -175,9 +173,8 @@ class histview {
   }
 
   /** Process a single line from the input file
-   * @class histview
-   * @method pline
-   * @param string line
+   * @method private pline
+   * @param string line the input line to parse
    * @return boolean success
    */
   function pline($line) {
@@ -230,7 +227,7 @@ class histview {
   }
 
   /** Check whether there is a file to download - and create URL if any
-   * @method getdlurl
+   * @method private getdlurl
    * @param string type Type (one of tar, deb, rpm)
    * @return string href complete href string if found, empty string else
    */
@@ -262,10 +259,9 @@ class histview {
     return "";
   }
 
-  /** Generate the output array
-   * @class histview
-   * @method out
-   * @return array HTML formatted history
+  /** Generate the output page content
+   * @method public out
+   * @return string HTML formatted history
    */
   function out() {
     $output = "<DIV ALIGN='center'><FONT SIZE='-2'>" . $this->lastchange
