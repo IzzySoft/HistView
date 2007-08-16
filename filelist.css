@@ -1,0 +1,18 @@
+ <style type="text/css"><!--
+  tr.head { background-color: #880000; color:#fff; }
+  td      { vertical-align: top; background-color: #ffffff; }
+  td.name { font-size: 90%; vertical-align: middle; width: 90pt; /* font-family: monospace; */ }
+  td.size { color: #204080; vertical-align: middle; text-align: right; }
+  td.date { color: #006020; vertical-align: middle; }
+  td.desc { color: #000080; vertical-align: middle; }
+  td.head { color: #ffff00; background-color: #880000; font-style: bold; }
+  div.ebox {
+    padding:2px;
+    background: #e5e5e5;
+    margin:0.5em;
+    text-align:center;
+    color: #f00;
+    font-weight: bold;
+    border: 1px solid black;
+  }
+ --></style>
