@@ -300,7 +300,7 @@ class download {
       $version = $matches[2].".".$matches[3].".".$matches[4];
       $query = "INSERT INTO ".$this->dbtable." (dl_date,prog,newver,referrer)"
              . " VALUES ('$date','$name','$version','".$_SERVER['HTTP_REFERER']."')";
-      require_once ( "db_mysql.inc" );
+      require_once ( "class.db_mysql.inc" );
       $db = new db_mysql;
       $db->Host     = $this->dbhost;
       $db->Database = $this->database;

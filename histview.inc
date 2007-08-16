@@ -20,7 +20,7 @@
  * @version $Revision$ $Date$
  */
 class histview {
-  var $hv_version = "0.1.3";
+  var $hv_version = "0.1.4";
   var $homepage= "http://www.qumran.org/homes/izzy/software/hv/about.php";
   var $plus   = "+";
   var $minus  = "-";
@@ -28,18 +28,20 @@ class histview {
   var $bug    = "!";
   var $ver    = "v";
   var $ignore = array("\$","#","--","==");
-  var $iplus   = "<IMG SRC='/icons/burst.gif' BORDER='0'>";
-  var $iminus  = "<IMG SRC='/icons/transfer.gif' BORDER='0'>";
-  var $ichange = "<IMG SRC='/icons/image1.gif' BORDER='0'>";
-  var $ibug    = "<IMG SRC='/icons/alert.red.gif' BORDER='0'>";
-  var $itar    = "<IMG SRC='/icons/box2.gif' BORDER='0'>";
-  var $ideb    = "<IMG SRC='/icons/box2.gif' BORDER='0'>";
-  var $irpm    = "<IMG SRC='/icons/box2.gif' BORDER='0'>";
+  var $iplus   = "<IMG SRC='/icons/burst.gif' BORDER='0' ALT='+'>";
+  var $iminus  = "<IMG SRC='/icons/transfer.gif' BORDER='0' ALT='-'>";
+  var $ichange = "<IMG SRC='/icons/image1.gif' BORDER='0' ALT='*'>";
+  var $ibug    = "<IMG SRC='/icons/alert.red.gif' BORDER='0' ALT='!'>";
+  var $itar    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
+  var $ideb    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
+  var $irpm    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
   var $tarbase = "";
   var $debbase = "";
   var $rpmbase = "";
   var $basedir = "";
   var $relname = "";
+  var $use_dlclass = FALSE;
+  var $sep     = ";";
   var $max_relnum = 9;
   var $arch    = "noarch";
   var $umark;  # user defined marks
@@ -66,6 +68,31 @@ class histview {
     $this->copy    = "2003-2007 by <A HREF='http://www.qumran.org/homes/izzy/' TARGET='_blank'>"
                    . "Itzchak Rehberg</A> &amp; <A HREF='http://www.izzysoft.de/' "
                    . "TARGET='_blank'>IzzySoft</A>";
+  }
+
+  /** Set download class usage
+   *  By default, HistView is set not to use the provided download class. Using
+   *  it, the links are pointing to the calling script, and the parameters
+   *  "file" (the filename) and "dir" (the directory type, e.g. "deb") are
+   *  added. That means you can hide the directories from your users, and
+   *  even add some download counter script or whatever.<br>
+   *  If you want that, simply turn it on here.
+   * @method use_dlclass
+   * @param optional boolean use Whether to use the download class (TRUE, Default) or not (FALSE)
+   */
+  function use_dlclass($use=TRUE) {
+    $this->use_dlclass = $use;
+  }
+
+  /** Set the URL parameter separator
+   *  By default, HistView uses the ";" as separator (as recommended by W3C).
+   *  If your setup does not support this, and you cannot change the setup:
+   *  Change the separator to "&"
+   * @method set_separator
+   * @param string separator One character to separate parameters in URLs
+   */
+  function set_separator($sep) {
+    $this->sep = $sep;
   }
 
   /** Process the input file
@@ -251,10 +278,14 @@ class histview {
     }
     if (file_exists($f)) {
       $f = substr($f,strlen($this->basedir));
-      $f = "<A HREF='$f'>";
-      if (!empty($img[$type])) $f .= $img[$type]; else $f .= $type;
-      $f .= "</A>";
-      return $f;
+      if ($this->use_dlclass) {
+        $dl = "<A HREF='".$_SERVER["PHP_SELF"]."?file=".basename($f).$this->sep."dir=$type'>";
+      } else {
+        $dl = "<A HREF='$f'>";
+      }
+      if (!empty($img[$type])) $dl .= $img[$type]; else $dl .= $type;
+      $dl .= "</A>";
+      return $dl;
     }
     return "";
   }

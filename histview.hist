@@ -3,6 +3,16 @@ $Id$
 History for HistView
 ====================
 
+v0.1.4
+-------------------
++ added the download class, which provides scanning of directories for
+  downloadable files and creating links for them - or send a given file
+  to the visitor requesting it, while optionally recording the download
+  in a MySQL database
++ modified the histview class to (optionally) use the download class
+* modified the img tags to conform w3c
++ added the possibility to chose a different URL argument separator
+
 v0.1.3 (09.08.2007)
 -------------------
 + automatically add download links for *.tar.gz, *.deb and *.rpm if files
