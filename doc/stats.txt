@@ -1,0 +1,22 @@
+Create Download Statistics
+==========================
+
+You may have noticed that HistView now also (optionally) provides download links.
+Moreover, if you enable the use of the download class, you have the possibility
+to record download statistics to your MySQL database (see the example files
+provided). And here you find an example of the table you need to use that:
+
+CREATE TABLE statistics (
+  dl_date	DATE,
+  prog		VARCHAR(30),
+  newver	VARCHAR(10),
+  referrer	VARCHAR(100)
+);
+
+No primary key needed for this. If you really want one, add a column "id" and
+make it auto-increment - but it's really not needed.
+
+As the name "newver" suggests, you can also have a column "oldver" (and many
+others) - but these are not (yet?) used by HistView and/or the download class.
+However, if you want to use more columns for something: No problem, the
+download class will simply ignore them.
