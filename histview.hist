@@ -3,7 +3,7 @@ $Id$
 History for HistView
 ====================
 
-v0.1.4
+v0.1.4 (17.08.2007)
 -------------------
 + added the download class, which provides scanning of directories for
   downloadable files and creating links for them - or send a given file
