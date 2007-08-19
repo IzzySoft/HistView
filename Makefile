@@ -27,5 +27,7 @@ installdirs:
 	if [ ! -e $(WEBROOT) ]; then mkdir -p $(WEBROOT); fi
 
 uninstall:
+	linkstat=`readlink $(LINKTO)`
+	if [ "$linkstat" = "$(datadir)" ]; then rm -f $(LINKTO); fi
 	rm -rf $(datadir)
 	rm -rf $(docdir)
