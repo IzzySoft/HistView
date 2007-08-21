@@ -1,5 +1,7 @@
  <style type="text/css"><!--
-  tr.head { background-color: #880000; color:#fff; }
+  tr.super { background-color: #00f; color: #fff; }
+  th.super { background-color: #00f; color: #fff; text-align: center; }
+  tr.head { background-color: #880000; color: #fff; }
   td      { vertical-align: top; background-color: #ffffff; }
   td.name { font-size: 90%; vertical-align: middle; width: 90pt; /* font-family: monospace; */ }
   td.size { color: #204080; vertical-align: middle; text-align: right; }
