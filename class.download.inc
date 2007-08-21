@@ -62,7 +62,7 @@ class download {
 
   /** Set the date format to use
    * @method set_dateformat
-   * @param format Date format to use (refer to the PHP manual of date)
+   * @param string format Date format to use (refer to the PHP manual of date)
    */
   function set_dateformat($format) {
     $this->dateformat = $format;
@@ -182,8 +182,8 @@ class download {
 
   /** Sort array by given key
    * @method private ar_sort_by
-   * @param arr Array to sort
-   * @param orderby Field to order by
+   * @param array arr Array to sort
+   * @param string orderby Field to order by
    * @param optional boolean rev Reverse order (default:false)
    * @param optional integer method One of the constants SORT_REGULAR,
    *        SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING

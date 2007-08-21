@@ -7,6 +7,7 @@ v0.1.5
 -------------------
 + added doc/stats.txt to get you started with download statistics if you want them
 * updated filelist.css
++ added api reference for the download class
 
 v0.1.4 (17.08.2007)
 -------------------
