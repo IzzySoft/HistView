@@ -21,7 +21,7 @@
  */
 class histview {
   var $hv_version = "0.1.4";
-  var $homepage= "http://www.qumran.org/homes/izzy/software/hv/about.php";
+  var $homepage= "http://projects.izzysoft.de/?topic=progs;subject=histview";
   var $plus   = "+";
   var $minus  = "-";
   var $change = "*";
@@ -65,8 +65,7 @@ class histview {
     $this->input = file($infile);
     $this->idx->ver  = 0;
     $this->idx->mark = 0;
-    $this->copy    = "2003-2007 by <A HREF='http://www.qumran.org/homes/izzy/' TARGET='_blank'>"
-                   . "Itzchak Rehberg</A> &amp; <A HREF='http://www.izzysoft.de/' "
+    $this->copy    = "2003-2007 by Itzchak Rehberg &amp; <A HREF='http://www.izzysoft.de/' "
                    . "TARGET='_blank'>IzzySoft</A>";
   }
 
