@@ -3,7 +3,7 @@ $Id$
 History for HistView
 ====================
 
-v0.1.5
+v0.1.5 (08.05.2008)
 -------------------
 + added doc/stats.txt to get you started with download statistics if you want them
 * updated filelist.css
