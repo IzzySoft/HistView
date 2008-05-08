@@ -1,18 +1,14 @@
 /* $Id$ */
 
-<style type="text/css">
-<!--
  body {
    font-family: Verdana,Arial,Helvetica,sans-serif;
    background-color: #f5f5dc;
    color: #000000;
-   link: #bb0000;
-   vlink: #ff0000;
  }
  a:link { color: #bb0000; }
  a:visited { color: #ff5500; }
 
- p { text-align:justified; }
+ p { text-align:justify; }
  h2 {
   text-align:center;
   color:#800000;
@@ -25,5 +21,7 @@
  }
  td { font-size:80%; }
 
-//-->
-</style>
+ .bugfix { color:#f00; }
+ .feature { color:#090; }
+ .removed { text-decoration:line-through; }
+ .changed { text-decoration:none; }

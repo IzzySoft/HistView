@@ -1,6 +1,6 @@
 <?
  #############################################################################
- # HistView                                 (c) 2003-2007 by Itzchak Rehberg #
+ # HistView                                 (c) 2003-2008 by Itzchak Rehberg #
  # written by Itzchak Rehberg <devel@izzysoft.de>                            #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
@@ -16,11 +16,11 @@
  * @package Api
  * @class histview
  * @author Izzy (devel@izzysoft.de)
- * @copyright (c) 2003-2007 by Itzchak Rehberg and IzzySoft
+ * @copyright (c) 2003-2008 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
  */
 class histview {
-  var $hv_version = "0.1.4";
+  var $hv_version = "0.1.5";
   var $homepage= "http://projects.izzysoft.de/?topic=progs;subject=histview";
   var $plus   = "+";
   var $minus  = "-";
@@ -35,6 +35,10 @@ class histview {
   var $itar    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
   var $ideb    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
   var $irpm    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
+  var $cplus   = "feature";
+  var $cminus  = "removed";
+  var $cchange = "changed";
+  var $cbug    = "bugfix";
   var $tarbase = "";
   var $debbase = "";
   var $rpmbase = "";
@@ -65,7 +69,7 @@ class histview {
     $this->input = file($infile);
     $this->idx->ver  = 0;
     $this->idx->mark = 0;
-    $this->copy    = "2003-2007 by Itzchak Rehberg &amp; <A HREF='http://www.izzysoft.de/' "
+    $this->copy    = "2003-2008 by Itzchak Rehberg &amp; <A HREF='http://www.izzysoft.de/' "
                    . "TARGET='_blank'>IzzySoft</A>";
   }
 
@@ -119,6 +123,20 @@ class histview {
    */
   function set_icon($iplus="",$iminus="",$ichange="",$ibug="",$itar="",$ideb="",$irpm="") {
     $details = array("iplus","iminus","ichange","ibug","itar","ideb","irpm");
+    foreach ($details as $var) {
+      if ($$var!="") $this->$var = $$var;
+    }
+  }
+
+  /** Override CSS classes for change details
+   * @method set_cssclass
+   * @param optional string cplus CSS class for "+" (default:"feature")
+   * @param optional string cminus CSS class for "-" (default:"removed")
+   * @param optional string cchange CSS class for "*" (default:"changed")
+   * @param optional string cbug CSS class for "!" (default:"bugfix")
+   */
+  function set_cssclass($cplus="feature",$cminus="removed",$cchange="changed",$cbug="bugfix") {
+    $details = array("cplus","cminus","cchange","cbug");
     foreach ($details as $var) {
       if ($$var!="") $this->$var = $$var;
     }
@@ -187,13 +205,15 @@ class histview {
    * @param string name unique name for the mark
    * @param string symbol one character like '!' for a bug
    * @param string icon complete image tag or string to display instead of the symbol
+   * @param optional string cssclass CSS class to apply (default:"changed")
    * @return boolean success
    */
-  function add_mark($name,$symbol,$icon) {
+  function add_mark($name,$symbol,$icon,$class="changed") {
     if (isset($this->umark->$name)) return FALSE;
     if (strlen($symbol) != 1) return FALSE;
     $this->umark->$name->symbol = $symbol;
     $this->umark->$name->icon   = $icon;
+    $this->umark->$name->class  = $class;
     $this->umarks["$symbol"] = $name;
     return TRUE;
   }
@@ -224,18 +244,22 @@ class histview {
                      break;
       case $this->plus   : ++$this->idx->mark;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->iplus;
+                     $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->cplus;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                      return TRUE; break;
       case $this->minus  : ++$this->idx->mark;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->iminus;
+                     $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->cminus;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                      return TRUE; break;
       case $this->change : ++$this->idx->mark;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->ichange;
+                     $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->cchange;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                      return TRUE; break;
       case $this->bug    : ++$this->idx->mark;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->ibug;
+                     $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->cbug;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                      return TRUE; break;
       default      : # first we need to check for user defined marks now
@@ -243,6 +267,7 @@ class histview {
                        ++$this->idx->mark;
                        $name = $this->umarks["$t1char"];
                        $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->umark->$name->icon;
+                       $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->umark->$name->class;
                        $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                        return TRUE; break;
                      }
@@ -310,7 +335,7 @@ class histview {
       $chgs = count($this->version[$i]->changes);
       for ($k=1;$k<=$chgs;++$k) {
         $output .= " <TR><TD VALIGN='middle'>".$this->version[$i]->changes[$k]->mark."</TD>\n"
-                .  "     <TD VALIGN='middle'>".$this->version[$i]->changes[$k]->content."</TD></TR>\n";
+                .  "     <TD VALIGN='middle' CLASS='".$this->version[$i]->changes[$k]->class."'>".$this->version[$i]->changes[$k]->content."</TD></TR>\n";
       }
     }
     $output .= " <TR><TH COLSPAN='2'></TH>\n <TR><TD COLSPAN='2'><DIV ALIGN='center'><FONT SIZE='-2'>"

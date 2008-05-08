@@ -8,6 +8,8 @@ v0.1.5
 + added doc/stats.txt to get you started with download statistics if you want them
 * updated filelist.css
 + added api reference for the download class
++ added CSS classes for the change details, so e.g. bugfixes are displayed red,
+  and feature adds green; this way important things are kind of hilighted
 
 v0.1.4 (17.08.2007)
 -------------------
