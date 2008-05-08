@@ -18,12 +18,12 @@ install: installdirs
 	$(INSTALL_DATA) class.* $(datadir)
 	$(INSTALL_DATA) dl_latest.php $(datadir)
 	$(INSTALL_DATA) icons/* $(datadir)/icons
-	$(INSTALL_DATA) doc/* $(docdir)
+	cp -pr doc/* $(docdir)
 	if [ ! -e $(LINKTO) ]; then ln -s $(datadir) $(LINKTO); fi
 
 installdirs:
 	mkdir -p $(datadir)/icons
-	mkdir -p $(docdir)
+	mkdir -p $(docdir)/apidoc/Api
 	if [ ! -e $(WEBROOT) ]; then mkdir -p $(WEBROOT); fi
 
 uninstall:
