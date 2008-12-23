@@ -1,6 +1,6 @@
 <?
  #############################################################################
- # HistView                                 (c) 2003-2007 by Itzchak Rehberg #
+ # HistView                                 (c) 2003-2008 by Itzchak Rehberg #
  # written by Itzchak Rehberg <devel@izzysoft.de>                            #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
@@ -26,6 +26,9 @@ class download {
   var $filelist = array(); // Array[0..n] of array[name,version,sortver,file,icon[,size,date]]
   var $dltype   = "internal";
   var $argsep   = ";";
+  var $ignored_bots  = array(); // Array[0..n] of strings (substr of bot names)
+  var $rejected_bots = array(); // Array[0..n] of strings (substr of bot names)
+  var $remote_ua     = "";
 
   /** Initial setup of default filetypes and date format
    * @constructor download
@@ -41,6 +44,7 @@ class download {
     $this->set_dateformat("d.m.Y");
     $this->basedir = $basedir;
     if (!empty($icondir)) $this->icondir = $icondir;
+    $this->remote_ua = strtolower($_SERVER["HTTP_USER_AGENT"]);
   }
 
   /** Setup file types
@@ -102,6 +106,42 @@ class download {
    */
   function set_argsep($sep) {
     $this->argsep = $sep;
+  }
+
+  /** Setup bots to be ignored/rejected
+   * @method private add_bot
+   * @param mixed bot string or array of strings (substr of botnames)
+   * @param string cat category to add the bot to (ignore,reject)
+   */
+  function add_bot(&$bot,$cat) {
+    switch ($cat) {
+      case "ignore" :
+        if (is_array($bot)) $this->ignored_bots = array_merge($this->ignored_bots,$bot);
+	elseif (is_string($bot)) $this->ignored_bots[] = $bot;
+	else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
+	break;
+      case "reject" :
+        if (is_array($bot)) $this->rejected_bots = array_merge($this->rejected_bots,$bot);
+	elseif (is_string($bot)) $this->rejected_bots[] = $bot;
+	else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
+	break;
+    }
+  }
+
+  /** Add bots to ignore list
+   * @method ignore_bot
+   * @param mixed bot string or array of strings (substr of botnames)
+   */
+  function ignore_bot($bot) {
+    $this->add_bot($bot,"ignore");
+  }
+
+  /** Add bots to ignore list
+   * @method ignore_bot
+   * @param mixed bot string or array of strings (substr of botnames)
+   */
+  function reject_bot($bot) {
+    $this->add_bot($bot,"reject");
   }
 
   /** Scan another directory
@@ -261,13 +301,19 @@ class download {
     }
   }
 
-  /** Download a file
+  /** Download a file (if the remote UA is not in the reject list)
    * @method sendfile
    * @param string filename File to download
    * @param optional string directory Directory where the file resides (if other than the recent one)
    * @return boolean file_sent TRUE if file found, FALSE otherwise
    */
   function sendfile($fname,$dir="") {
+    foreach ($this->rejected_bots as $ua) {
+      if (strpos($this->remote_ua,strtolower($ua))!==FALSE) {
+        header("HTTP/1.0 403 Permission Denied");
+	exit;
+      }
+    }
     if (empty($dir)) $dir = $this->dir;
     $file = $dir."/".$fname;
     if (!file_exists($file)) return FALSE;
@@ -283,12 +329,16 @@ class download {
     }
   }
 
-  /** Increase download counter in the database
+  /** Increase download counter in the database (if the Remote UA is not in the
+   *  ignore list)
    * @method dbcounter
    * @param string filename Filename to process
    */
   function dbcounter($file) {
     if (!isset($this->dbuser)) return;
+    foreach ($this->ignored_bots as $ua) {
+      if (strpos($this->remote_ua,strtolower($ua))!==FALSE) return;
+    }
     foreach ($this->ext as $type=>$ext) {
       preg_match("/.*(${ext})\$/",$file,$match);
       if (!empty($match[1])) break;

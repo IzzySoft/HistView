@@ -13,7 +13,7 @@ WEBROOT=$(DESTDIR)/var/www
 LINKTO=$(WEBROOT)/histview
 
 install: installdirs
-	$(INSTALL_DATA) histview.* $(datadir)
+	$(INSTALL_DATA) histview* $(datadir)
 	$(INSTALL_DATA) filelist.* $(datadir)
 	$(INSTALL_DATA) class.* $(datadir)
 	$(INSTALL_DATA) dl_latest.php $(datadir)
