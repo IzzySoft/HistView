@@ -12,19 +12,17 @@
 
  /* $Id$ */
 
+require_once(dirname(__FILE__)."/class.hvconfig.inc");
+
 /** Scanning a directory and checking for download files
  * @package Api
  * @class download
- * @author Izzy (devel@izzysoft.de)
- * @copyright (c) 2007 by Itzchak Rehberg and IzzySoft
+ * @author Izzy (devel AT izzysoft DOT de)
+ * @copyright (c) 2007-2008 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
  */
-class download {
-  var $excludes = array(".","..","files.htm","files.php","index.php","index.htm","index.html");
-  var $deficon  = "<IMG SRC='/icons/generic.gif' ALT='[*]' BORDER='0'>";
-  var $icondir  = "/images/icons";
+class download extends hvconfig {
   var $filelist = array(); // Array[0..n] of array[name,version,sortver,file,icon[,size,date]]
-  var $dltype   = "internal";
   var $argsep   = ";";
   var $ignored_bots  = array(); // Array[0..n] of strings (substr of bot names)
   var $rejected_bots = array(); // Array[0..n] of strings (substr of bot names)
@@ -38,6 +36,7 @@ class download {
    * @param optional string icondir URL of the directory where the icons reside
    */
   function download($basedir="",$icondir="") {
+    $this->hvconfig();
     $this->set_filetype("tar","/^([\w-\.]+)\-(\d+)\.(\d+)\.(\d+)\.tar\.gz/","tar.gz","tgz.png");
     $this->set_filetype("deb","/^([\w-\.]+)\_(\d+)\.(\d+)\.(\d+)\-[0-9a-z]*(\d+)_[\w]+\.deb/","deb","deb.png");
     $this->set_filetype("rpm","/^([\w]+)\-(\d+)\.(\d+)\.(\d+)\-[0-9a-z]*(\d+)\.[\w]+\.rpm/","rpm","rpm.png");
@@ -45,6 +44,30 @@ class download {
     $this->basedir = $basedir;
     if (!empty($icondir)) $this->icondir = $icondir;
     $this->remote_ua = strtolower($_SERVER["HTTP_USER_AGENT"]);
+    $this->set_bots("ignore",$this->ignorefile);
+    $this->set_bots("reject",$this->rejectfile);
+    if (is_array($this->db)) { // setup default db
+      $this->db_setup($this->db["host"],$this->db["database"],$this->db["user"],$this->db["pass"],$this->db["table"]);
+    }
+  }
+
+  /** Setup bots to ignore / reject
+   * @method set_bots
+   * @param string type "ignore" or "reject"
+   * @param string filename file to read the bots from
+   */
+  function set_bots($type,$file) {
+    if (file_exists($file)) {
+      $bots = file($file);
+      foreach ($bots as $bot) {
+        $bot = trim($bot);
+        if (empty($bot) || substr($bot,0,1)=="#") continue;
+	switch ($type) {
+	  case "ignore" : $this->ignore_bot($bot); break;
+	  case "reject" : $this->reject_bot($bot); break;
+	}
+      }
+    }
   }
 
   /** Setup file types
@@ -309,8 +332,9 @@ class download {
    */
   function sendfile($fname,$dir="") {
     foreach ($this->rejected_bots as $ua) {
-      if (strpos($this->remote_ua,strtolower($ua))!==FALSE) {
-        header("HTTP/1.0 403 Permission Denied");
+      if (strpos($this->remote_ua,strtolower($ua))!==FALSE) { // kick off bots
+        header($this->rejectheader);
+	echo $this->rejectmsg;
 	exit;
       }
     }
@@ -336,8 +360,11 @@ class download {
    */
   function dbcounter($file) {
     if (!isset($this->dbuser)) return;
+    $date = date('Y-m-d');
     foreach ($this->ignored_bots as $ua) {
-      if (strpos($this->remote_ua,strtolower($ua))!==FALSE) return;
+      if (strpos($this->remote_ua,strtolower($ua))!==FALSE) { // do not count bot downloads
+        return;
+      }
     }
     foreach ($this->ext as $type=>$ext) {
       preg_match("/.*(${ext})\$/",$file,$match);
@@ -348,8 +375,8 @@ class download {
       $date = date('Y-m-d');
       $name = $matches[1];
       $version = $matches[2].".".$matches[3].".".$matches[4];
-      $query = "INSERT INTO ".$this->dbtable." (dl_date,prog,newver,referrer)"
-             . " VALUES ('$date','$name','$version','".$_SERVER['HTTP_REFERER']."')";
+      $query = "INSERT INTO ".$this->dbtable." (dl_date,prog,newver,referrer,remote_addr,http_user_agent)"
+             . " VALUES ('$date','$name','$version','".$_SERVER['HTTP_REFERER']."','".$_SERVER["REMOTE_ADDR"]."','".$_SERVER["HTTP_USER_AGENT"]."')";
       require_once ( "class.db_mysql.inc" );
       $db = new db_mysql;
       $db->Host     = $this->dbhost;
