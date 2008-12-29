@@ -201,9 +201,9 @@ class hvconfig {
     * @attribute array excludes
     */
    $this->excludes = array(".","..","files.htm","files.php","index.php","index.htm","index.html");
-   /** Default icon
+   /** Icon to use by default. This must be a complete &lt;IMG&gt; tag.
     * @class hvconfig
-    * @attribute string deficon Complete &lt;IMG&gt; tag
+    * @attribute string deficon
     */
    $this->deficon  = "<IMG SRC='/icons/generic.gif' ALT='[*]' BORDER='0'>";
    /** URL directory where all other icons are stored
@@ -214,8 +214,9 @@ class hvconfig {
    //-----------------------------------------------------[ Database to use ]---
    /** Database to store download statistics. To override these settings later,
     *  it won't work this way -- use the <code>db_setup</code> method instead!
+    *  The array defined here has the elements host, database, user, pass, table
     * @class hvconfig
-    * @attribute array db Array with the elements: host, database, user, pass, table
+    * @attribute array db
     */
    $this->db["host"]     = "localhost";
    $this->db["database"] = "webstat";

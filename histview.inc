@@ -17,6 +17,7 @@ require_once(dirname(__FILE__)."/class.hvconfig.inc");
 /** Processing a history file and prepare it for HTML output
  * @package Api
  * @class histview
+ * @extends hvconfig
  * @author Izzy (devel@izzysoft.de)
  * @copyright (c) 2003-2008 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$

@@ -17,6 +17,7 @@ require_once(dirname(__FILE__)."/class.hvconfig.inc");
 /** Scanning a directory and checking for download files
  * @package Api
  * @class download
+ * @extends hvconfig
  * @author Izzy (devel AT izzysoft DOT de)
  * @copyright (c) 2007-2008 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
@@ -159,8 +160,8 @@ class download extends hvconfig {
     $this->add_bot($bot,"ignore");
   }
 
-  /** Add bots to ignore list
-   * @method ignore_bot
+  /** Add bots to reject list
+   * @method reject_bot
    * @param mixed bot string or array of strings (substr of botnames)
    */
   function reject_bot($bot) {
