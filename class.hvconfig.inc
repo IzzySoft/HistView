@@ -21,7 +21,7 @@
  */
 class hvconfig {
   function hvconfig() {
-   //=====================================================[ General Settings ]===
+   //====================================================[ General Settings ]===
    /** Separator for arguments in the URL
     * @class hvconfig
     * @attribute string argsep
@@ -36,8 +36,8 @@ class hvconfig {
     * @attribute string dltype
     */
    $this->dltype = "internal";
-   //====================================================[ HistView Settings ]===
-   //====================================================[ Download Settings ]===
+   //===================================================[ HistView Settings ]===
+   //===================================================[ Download Settings ]===
    /** Read bots to ignore from a file
     * @class hvconfig
     * @attribute string ignorefile
@@ -73,7 +73,7 @@ class hvconfig {
     * @attribute string icondir
     */
    $this->icondir  = "/images/icons";
-   //------------------------------------------------------[ Database to use ]---
+   //-----------------------------------------------------[ Database to use ]---
    /** Database to store download statistics. To override these settings later,
     *  it won't work this way -- use the <code>db_setup</code> method instead!
     * @class hvconfig
@@ -84,5 +84,11 @@ class hvconfig {
    $this->db["user"]     = "guest";
    $this->db["pass"]     = "guest";
    $this->db["table"]    = "downloads";
+   //------------------------------------------[ local/personal adjustments ]---
+   // to make your future updates easier, place your personal preferences into
+   // a personal file named "hv-localconf.inc" in the same directory as this
+   // file is located in - we include it here to override the defaults:
+   if (file_exists(dirname(__FILE__)."/hv-localconf.inc"))
+     include(dirname(__FILE__)."/hv-localconf.inc");
  }
 }

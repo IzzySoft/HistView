@@ -8,7 +8,8 @@ v0.1.6
 + adding the possibility to reject file requests based on user agent (or to
   ignore them for the DL counter). Useful to e.g. exclude bots
 + download class now uses a configuration file for generic settings (you still
-  can override those lateron, as usual)
+  can override those lateron, as usual). To make future updates easier, it
+  automatically includes a personal configuration file if that exists
 
 v0.1.5 (08.05.2008)
 -------------------

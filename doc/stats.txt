@@ -10,7 +10,9 @@ CREATE TABLE statistics (
   dl_date	DATE,
   prog		VARCHAR(30),
   newver	VARCHAR(10),
-  referrer	VARCHAR(100)
+  referrer	VARCHAR(100),
+  remote_addr	VARCHAR(15), -- IPv4
+  http_user_agent VARCHAR(255)
 );
 
 No primary key needed for this. If you really want one, add a column "id" and
@@ -20,3 +22,39 @@ As the name "newver" suggests, you can also have a column "oldver" (and many
 others) - but these are not (yet?) used by HistView and/or the download class.
 However, if you want to use more columns for something: No problem, the
 download class will simply ignore them.
+
+Some of the columns seem to indicate a "data collector" in the sense of
+collecting personal data to create profiles - but that is not the intention.
+Here is what the columns are intended for:
+
+* dl_date + prog + newver: To see what version of what prog has been downloaded
+     how often per day. With these columns, no personal data are stored,
+* referrer: Of course to see who brought the downloader here.
+* remote_addr: If you have an unusual high amount of downloads on one day, you
+     can be quite sure there was some crawler/bot downloading all it could get.
+     With this column you can identify which downloads you may want to drop from
+     the stats (DELETE...WHERE dl_date=.. AND prog=.. AND remote_addr=..)
+* http_user_agent: This helps you to identify bots (together with the remote_addr
+     column) so you can add them to either the ignore or the reject file, i.e. to
+     prevent them from increasing your DL counter (or from downloading at all)
+     for the future
+
+Having said that, after you applied the wanted changes (deleting wrong counters,
+adding bots to the ignore/reject file), you may want to "anonymize" the columns.
+You could:
+
+* truncate the referrer down to the domain
+* replace the remote_addr by a hash (or even by NULL)
+* replace the http_user_agent by a hash (or even by NULL)
+
+This is not done automatically by HistView, so you have to take care for that
+yourselves. Sample queries could look like:
+
+--- Remove the path from remote referrers, but keep the domain. Don't touch
+--- local references (path without protocol) or entries already processed.
+--- Turns 'http://www.example.com/some/path' into 'www.example.com'
+UPDATE statistics SET referrer=SUBSTRING_INDEX(SUBSTRING_INDEX(referrer,'/',3),'/',-1)
+ WHERE referrer LIKE 'http:%' OR referrer LIKE 'https:%';
+--- Remove all information about the remote site
+UPDATE statistics SET remote_addr=NULL;
+UPDATE statistics SET http_user_agent=NULL;

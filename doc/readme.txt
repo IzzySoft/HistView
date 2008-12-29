@@ -14,6 +14,7 @@ Contents
 3) Requirements
 4) Limitations
 5) Installation
+6) Configuration
 6) Usage
 
 ===============================================================================
@@ -70,20 +71,37 @@ the example histview.php included with this package for more information.
 5) Installation
 ---------------
 
-Very easy: just copy histview.inc somewhere into your PHP include path. If
-the local path (".") is in this list, you may also decide to put histview.inc
-into the same directory as your calling page (in the example: histview.php).
+Very easy: just copy the *.inc files somewhere into your PHP include path (but
+keep them together in the same directory). If the local path (".") is in this
+list, you may also decide to put them all into the same directory as your
+calling page (in the example: histview.php).
 
 ===============================================================================
 
-6) Usage
+6) Configuration
+----------------
+
+An example configuration file is provided with class.hvconfig.inc. All settings
+are well commented there, so you can see what they mean. Most of them have
+defaults which should fit in ~90% of all cases. If you need to define different
+values for the one or other, this is better done in a separate file named
+hv-localconf.inc - which must reside in the very same directory the other
+configuration file is placed into. If that file exists, it will automagically
+be included into the distributed configuration file, so the default settings
+will be overridden - but your personal settings will remain intact when
+updating to a newer version, though the configuration file may be updated with
+additional settings, again having suitable defaults.
+
+===============================================================================
+
+7) Usage
 --------
 
 As example, I provided histview.php with this package - which is set up to
 display histview.hist (the history file of HistView) as default. You can use
 this file for a quick start.
-For a complete reference to the methods, please refer to histview.html in this
-directory.
+For a complete reference to the methods, please refer to the Api documentation
+shipping with the distribution.
 
 
 Have fun!
