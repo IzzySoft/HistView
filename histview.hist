@@ -10,6 +10,7 @@ v0.1.6
 + download class now uses a configuration file for generic settings (you still
   can override those lateron, as usual). To make future updates easier, it
   automatically includes a personal configuration file if that exists
++ histview class now also uses the configuration file(s)
 
 v0.1.5 (08.05.2008)
 -------------------

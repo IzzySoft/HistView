@@ -53,13 +53,9 @@ $file = strtolower($prog).".hist";
 $hv = new histview($file,strtolower($prog));
 # Use the download class
 $hv->use_dlclass();
-# Setting up some more icons
-$hv->set_icon("","","","","<IMG SRC='icons/tgz.png' BORDER='0' ALT='*'>","<IMG SRC='icons/deb.png' BORDER='0' ALT='*'>","<IMG SRC='icons/rpm.png' BORDER='0' ALT='*'>");
 # Setting up the directories
 $hv->set_basedir("base",$basedir);
 $hv->set_basedir("tar", $dirs["tar"]);
-$hv->set_basedir("deb", $dirs["deb"]);
-$hv->set_basedir("rpm", $dirs["rpm"]);
 # Set up the release tag
 $hv->set_relname($relname);
 

@@ -12,6 +12,8 @@
 
  /* $Id$ */
 
+require_once(dirname(__FILE__)."/class.hvconfig.inc");
+
 /** Processing a history file and prepare it for HTML output
  * @package Api
  * @class histview
@@ -19,35 +21,10 @@
  * @copyright (c) 2003-2008 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
  */
-class histview {
-  var $hv_version = "0.1.5";
+class histview extends hvconfig {
+  var $hv_version = "0.1.6";
   var $homepage= "http://projects.izzysoft.de/?topic=progs;subject=histview";
-  var $plus   = "+";
-  var $minus  = "-";
-  var $change = "*";
-  var $bug    = "!";
-  var $ver    = "v";
-  var $ignore = array("\$","#","--","==");
-  var $iplus   = "<IMG SRC='/icons/burst.gif' BORDER='0' ALT='+'>";
-  var $iminus  = "<IMG SRC='/icons/transfer.gif' BORDER='0' ALT='-'>";
-  var $ichange = "<IMG SRC='/icons/image1.gif' BORDER='0' ALT='*'>";
-  var $ibug    = "<IMG SRC='/icons/alert.red.gif' BORDER='0' ALT='!'>";
-  var $itar    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
-  var $ideb    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
-  var $irpm    = "<IMG SRC='/icons/box2.gif' BORDER='0' ALT='*'>";
-  var $cplus   = "feature";
-  var $cminus  = "removed";
-  var $cchange = "changed";
-  var $cbug    = "bugfix";
-  var $tarbase = "";
-  var $debbase = "";
-  var $rpmbase = "";
-  var $basedir = "";
-  var $relname = "";
   var $use_dlclass = FALSE;
-  var $sep     = ";";
-  var $max_relnum = 9;
-  var $arch    = "noarch";
   var $umark;  # user defined marks
   var $umarks; # user defined marks
 
@@ -64,6 +41,11 @@ class histview {
    * @param optional string basename basename for files (e.g. "histview" for histview-0.1.3-izzy1.noarch.rpm)
    */
   function histview($infile,$name="") {
+    $this->hvconfig();
+    switch ($this->dltype) {
+      case "internal" : $this->use_dlclass(TRUE); break;
+      default         : $this->use_dlclass(FALSE); break;
+    }
     if (!empty($name)) $this->basename = $name;
     $this->lastchange = "Last modified: ".date("F d Y",filemtime($infile));
     $this->input = file($infile);
@@ -95,7 +77,7 @@ class histview {
    * @param string separator One character to separate parameters in URLs
    */
   function set_separator($sep) {
-    $this->sep = $sep;
+    $this->argsep = $sep;
   }
 
   /** Process the input file
@@ -303,7 +285,7 @@ class histview {
     if (file_exists($f)) {
       $f = substr($f,strlen($this->basedir));
       if ($this->use_dlclass) {
-        $dl = "<A HREF='".$_SERVER["PHP_SELF"]."?file=".basename($f).$this->sep."dir=$type'>";
+        $dl = "<A HREF='".$_SERVER["PHP_SELF"]."?file=".basename($f).$this->argsep."dir=$type'>";
       } else {
         $dl = "<A HREF='$f'>";
       }
