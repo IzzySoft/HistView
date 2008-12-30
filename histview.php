@@ -30,18 +30,16 @@ if (!empty($dir) && !in_array($dir,array("tar","deb","rpm"))) unset ($file,$dir)
 $dirs = array( "tar" => "/var/ftp/downloads",
                "deb" => "/var/repo/debian",
                "rpm" => "/var/repo/redhat/RPMS.dist" );
-$basedir = ""; // we don't need any since we use the download class
-$relname = "johnny";
 $charset = "iso-8859-15";
 
 #========================================================[ Process Request ]===
 #----------------------------------------------[ Was a download requested? ]---
 if (!empty($_REQUEST["file"])) {
   include("class.download.inc");
-  $dl = new download();
-  $dl->db_setup("localhost","statistics","guest","guest","downloads");
-  if (!empty($file) && !empty($dir))
+  if (!empty($file) && !empty($dir)) {
+    $dl = new download();
     if ($dl->sendfile($file,$dirs[$dir])) exit;
+  }
   $e404 = "\n<DIV CLASS='ebox'>Sorry - but the requested file was not found here.</DIV>";
 } else {
   $e404 = "";
