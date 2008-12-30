@@ -40,8 +40,11 @@ if (!empty($_REQUEST["file"])) {
   include("class.download.inc");
   $dl = new download();
   $dl->db_setup("localhost","statistics","guest","guest","downloads");
-  if ($dl->sendfile($_REQUEST["file"],$dirs[$_REQUEST["dir"]])) exit;
+  if (!empty($file) && !empty($dir))
+    if ($dl->sendfile($file,$dirs[$dir])) exit;
   $e404 = "\n<DIV CLASS='ebox'>Sorry - but the requested file was not found here.</DIV>";
+} else {
+  $e404 = "";
 }
 
 #-----------------------------------------------[ Display the history file ]---
@@ -69,5 +72,6 @@ echo "<HTML><HEAD>\n"
    . ' <LINK REL="stylesheet" TYPE="text/css" HREF="histview.css">'."\n"
    . " <TITLE>$title</TITLE>\n"
    . "</HEAD><BODY>\n<H2>$title</H2>\n";
+echo $e404;
 echo $history."\n</BODY></HTML>\n";
 ?>
