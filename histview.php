@@ -52,8 +52,6 @@ $file = strtolower($prog).".hist";
 #$hv = new histview($file);
 # Providing download links:
 $hv = new histview($file,strtolower($prog));
-# Use the download class
-$hv->use_dlclass();
 # Setting up the directories
 $hv->set_basedir("tar", $dirs["tar"]);
 
