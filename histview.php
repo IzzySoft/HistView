@@ -55,10 +55,7 @@ $hv = new histview($file,strtolower($prog));
 # Use the download class
 $hv->use_dlclass();
 # Setting up the directories
-$hv->set_basedir("base",$basedir);
 $hv->set_basedir("tar", $dirs["tar"]);
-# Set up the release tag
-$hv->set_relname($relname);
 
 # Process the page
 $hv->process();
