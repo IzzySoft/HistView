@@ -52,7 +52,7 @@ class histview extends hvconfig {
     $this->input = file($infile);
     $this->idx->ver  = 0;
     $this->idx->mark = 0;
-    $this->copy    = "2003-2008 by Itzchak Rehberg &amp; <A HREF='http://www.izzysoft.de/' "
+    $this->copy    = "2003-2009 by Itzchak Rehberg &amp; <A HREF='http://www.izzysoft.de/' "
                    . "TARGET='_blank'>IzzySoft</A>";
   }
 

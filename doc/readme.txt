@@ -1,5 +1,5 @@
 # =============================================================================
-# HistView                             (c) 2003 by IzzySoft (devel@izzysoft.de)
+# HistView                 (c) 2003-2009 by IzzySoft (devel AT izzysoft DOT de)
 # -----------------------------------------------------------------------------
 # $Id$
 # -----------------------------------------------------------------------------
@@ -100,8 +100,9 @@ additional settings, again having suitable defaults.
 As example, I provided histview.php with this package - which is set up to
 display histview.hist (the history file of HistView) as default. You can use
 this file for a quick start.
-For a complete reference to the methods, please refer to the Api documentation
-shipping with the distribution.
+For a more detailed documentation, please visit the project site at
+http://projects.izzysoft.de/trac/histview. For a complete reference to the
+methods, please refer to the Api documentation shipping with the distribution.
 
 
 Have fun!

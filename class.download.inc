@@ -1,7 +1,7 @@
 <?
  #############################################################################
- # HistView                                 (c) 2003-2008 by Itzchak Rehberg #
- # written by Itzchak Rehberg <devel@izzysoft.de>                            #
+ # HistView                                 (c) 2003-2009 by Itzchak Rehberg #
+ # written by Itzchak Rehberg <devel AT izzysoft DOT de>                     #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
  # This program is free software; you can redistribute and/or modify it      #
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/class.hvconfig.inc");
  * @class download
  * @extends hvconfig
  * @author Izzy (devel AT izzysoft DOT de)
- * @copyright (c) 2007-2008 by Itzchak Rehberg and IzzySoft
+ * @copyright (c) 2007-2009 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
  */
 class download extends hvconfig {
