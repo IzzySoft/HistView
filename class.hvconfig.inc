@@ -211,10 +211,18 @@ class hvconfig {
     * @attribute string icondir
     */
    $this->icondir  = "/images/icons";
+   /** Shall we use the statistic functions (download counter)?
+    *  0-No, 1-Yes
+    * @class hvconfig
+    * @attribute integer statisticsmode
+    */
+   $this->statisticsmode = 1;
    //-----------------------------------------------------[ Database to use ]---
-   /** Database to store download statistics. To override these settings later,
-    *  it won't work this way -- use the <code>db_setup</code> method instead!
-    *  The array defined here has the elements host, database, user, pass, table
+   /** Database to store download statistics. Irrelevant (i.e. not used) when
+    *  statistics are turned off (statisticsmode=0). To override these settings
+    *  later, it won't work this way -- use the <code>db_setup</code> method
+    *  instead! The array defined here has the elements host, database, user,
+    *  pass, table
     * @class hvconfig
     * @attribute array db
     */

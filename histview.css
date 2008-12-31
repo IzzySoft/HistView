@@ -25,3 +25,13 @@
  .feature { color:#090; }
  .removed { text-decoration:line-through; }
  .changed { text-decoration:none; }
+
+ div.ebox {
+   padding:2px;
+   background: #e5e5e5;
+   margin:0.5em;
+   text-align:center;
+   color: #f00;
+   font-weight: bold;
+   border: 1px solid black;
+ }

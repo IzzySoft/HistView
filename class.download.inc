@@ -50,6 +50,7 @@ class download extends hvconfig {
     if (is_array($this->db)) { // setup default db
       $this->db_setup($this->db["host"],$this->db["database"],$this->db["user"],$this->db["pass"],$this->db["table"]);
     }
+    $this->set_statisticsmode($this->statisticsmode); // make sure stats are disabled w/o database
   }
 
   /** Setup bots to ignore / reject
@@ -130,6 +131,28 @@ class download extends hvconfig {
    */
   function set_argsep($sep) {
     $this->argsep = $sep;
+  }
+
+  /** Set the statisticsmode
+   *  Use this to turn on (1)/Off (0) statistic functions (database related
+   *  stuff like download counters) at runtime
+   * @method set_statisticsmode
+   * @param integer mode 0 (to turn off stats) or 1 (to turn them on)
+   * @return boolean success
+   */
+  function set_statisticsmode($mode) {
+    $valid_modes = array(0,1);
+    if (!is_int($mode) || !in_array($mode,$valid_modes)) {
+      trigger_error("Invalid value '$mode' for statisticsmode ignored",E_USER_ERROR);
+      return FALSE;
+    }
+    if ($mode==1 && (empty($this->dbhost)||empty($this->database)||empty($this->dbuser)||empty($this->dbtable))) {
+      trigger_error("Cannot enable statistics mode - invalid database settings (no dbhost, database, dbuser, and/or dbtable configured)",E_USER_ERROR);
+      $this->statisticsmode = 0;
+      return FALSE;
+    }
+    $this->statisticsmode = $mode;
+    return TRUE;
   }
 
   /** Setup bots to be ignored/rejected
@@ -354,13 +377,13 @@ class download extends hvconfig {
     }
   }
 
-  /** Increase download counter in the database (if the Remote UA is not in the
-   *  ignore list)
+  /** Increase download counter in the database (if statisticsmode is enabled
+   *  and the Remote UA is not in the ignore list)
    * @method dbcounter
    * @param string filename Filename to process
    */
   function dbcounter($file) {
-    if (!isset($this->dbuser)) return;
+    if ($this->statisticsmode==0 || !isset($this->dbuser)) return;
     $date = date('Y-m-d');
     foreach ($this->ignored_bots as $ua) {
       if (strpos($this->remote_ua,strtolower($ua))!==FALSE) { // do not count bot downloads
@@ -384,7 +407,8 @@ class download extends hvconfig {
       $db->Database = $this->database;
       $db->User     = $this->dbuser;
       $db->Password = $this->dbpass;
-      @$db->query($query);
+      $db->Halt_On_Error = "no";
+      @$db->query($query) || trigger_error("Failed to update the database: ".$db->Error." (".$db->Errno.")",E_USER_ERROR);
     }
   }
 

@@ -21,7 +21,7 @@ $prog = $_REQUEST["prog"];
 if (empty($prog) || @preg_match("/[^\w]/u",$prog)) $prog = "HistView";
 # $file should be alphanumeric - no special chars or / or \
 $file = $_REQUEST["file"];
-if (empty($file) || @preg_match("/[^\w\s-\pL]/u",$file)) unset ($file);
+if (empty($file) || @preg_match("/[^\w-_.]/u",$file)) unset ($file);
 # $dir should only be one of ours - here: "tar","deb","rpm"
 $dir  = $_REQUEST["dir"];
 if (!empty($dir) && !in_array($dir,array("tar","deb","rpm"))) unset ($file,$dir);
@@ -47,7 +47,7 @@ if (!empty($_REQUEST["file"])) {
 
 #-----------------------------------------------[ Display the history file ]---
 include("histview.inc");
-$file = strtolower($prog).".hist";
+$file = $dirs["tar"]."/".strtolower($prog).".hist"; // ChangeLog to parse
 # Simple method, no download links to provide:
 #$hv = new histview($file);
 # Providing download links:

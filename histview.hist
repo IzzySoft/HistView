@@ -11,6 +11,10 @@ v0.1.6
   can override those lateron, as usual). To make future updates easier, it
   automatically includes a personal configuration file if that exists
 + histview class now also uses the configuration file(s)
+* statistic functions (database related stuff like download counter) can be
+  disabled now for the download class
+* if a database update fails, script is no longer stopped. Instead, an error
+  is thrown (E_USER_ERROR) and the script continues, ignoring the issue
 
 v0.1.5 (08.05.2008)
 -------------------
