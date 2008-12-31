@@ -1,7 +1,7 @@
 <?
  #############################################################################
- # HistView                                 (c) 2003-2008 by Itzchak Rehberg #
- # written by Itzchak Rehberg <devel@izzysoft.de>                            #
+ # HistView                                 (c) 2003-2009 by Itzchak Rehberg #
+ # written by Itzchak Rehberg <devel AT izzysoft DOT de>                     #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
  # This program is free software; you can redistribute and/or modify it      #
@@ -19,12 +19,12 @@ require_once(dirname(__FILE__)."/class.hvconfig.inc");
  * @class histview
  * @extends hvconfig
  * @author Izzy (devel@izzysoft.de)
- * @copyright (c) 2003-2008 by Itzchak Rehberg and IzzySoft
+ * @copyright (c) 2003-2009 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
  */
 class histview extends hvconfig {
   var $hv_version = "0.1.6";
-  var $homepage= "http://projects.izzysoft.de/?topic=progs;subject=histview";
+  var $homepage= "http://projects.izzysoft.de/trac/histview";
   var $use_dlclass = FALSE;
   var $umark;  # user defined marks
   var $umarks; # user defined marks
