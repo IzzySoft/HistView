@@ -3,7 +3,7 @@ $Id$
 History for HistView
 ====================
 
-v0.1.6
+v0.1.6 (01.01.2009)
 -------------------
 + adding the possibility to reject file requests based on user agent (or to
   ignore them for the DL counter). Useful to e.g. exclude bots
