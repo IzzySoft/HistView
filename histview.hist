@@ -3,6 +3,16 @@ $Id$
 History for HistView
 ====================
 
+v0.1.7
+-------------------
++ adding referer check. Options for noRefererAction (empty referer) include
+  "pass", "deny", and "whois" (check for crawler/bot nets)
++ adding remote network check. Especially some MS crawlers fake their UAs. But
+  since they always leave the referer empty, we can limit the network checks
+  to those. Use the histview_crawlernets file to specify their network information
+  (one spec per line, all lowercase). These will be checked against the whois
+  information for 'netname', 'OrgName', 'OrgNOCName', and 'descr'.
+
 v0.1.6 (01.01.2009)
 -------------------
 + adding the possibility to reject file requests based on user agent (or to

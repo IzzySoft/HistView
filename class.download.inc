@@ -27,6 +27,7 @@ class download extends hvconfig {
   var $argsep   = ";";
   var $ignored_bots  = array(); // Array[0..n] of strings (substr of bot names)
   var $rejected_bots = array(); // Array[0..n] of strings (substr of bot names)
+  var $crawler_nets = array(); // Array[0..n] of strings (substr of net names)
   var $remote_ua     = "";
 
   /** Initial setup of default filetypes and date format
@@ -45,6 +46,7 @@ class download extends hvconfig {
     $this->basedir = $basedir;
     if (!empty($icondir)) $this->icondir = $icondir;
     $this->remote_ua = strtolower($_SERVER["HTTP_USER_AGENT"]);
+    $this->set_bots("crawler",$this->crawlerfile);
     $this->set_bots("ignore",$this->ignorefile);
     $this->set_bots("reject",$this->rejectfile);
     if (is_array($this->db)) { // setup default db
@@ -65,6 +67,7 @@ class download extends hvconfig {
         $bot = trim($bot);
         if (empty($bot) || substr($bot,0,1)=="#") continue;
 	switch ($type) {
+	  case "crawler" : $this->crawler_net($bot); break;
 	  case "ignore" : $this->ignore_bot($bot); break;
 	  case "reject" : $this->reject_bot($bot); break;
 	}
@@ -172,6 +175,11 @@ class download extends hvconfig {
 	elseif (is_string($bot)) $this->rejected_bots[] = $bot;
 	else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
 	break;
+      case "crawler" :
+        if (is_array($bot)) $this->crawler_nets = array_merge($this->crawler_nets,$bot);
+	elseif (is_string($bot)) $this->crawler_nets[] = $bot;
+	else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
+	break;
     }
   }
 
@@ -189,6 +197,14 @@ class download extends hvconfig {
    */
   function reject_bot($bot) {
     $this->add_bot($bot,"reject");
+  }
+
+  /** Add name to crawler list
+   * @method crawler_net
+   * @param mixed name string or array of strings (substr of botnames)
+   */
+  function crawler_net($bot) {
+    $this->add_bot($bot,"crawler");
   }
 
   /** Scan another directory
@@ -348,6 +364,92 @@ class download extends hvconfig {
     }
   }
 
+  /** Reject a client and quit
+   * @method reject
+   */
+  function reject() {
+    header($this->rejectheader);
+    echo $this->rejectmsg;
+    exit;
+  }
+
+  /** Handle request w/o referer
+   * @method refererCheck
+   */
+  function refererCheck() {
+    if (!empty($_SERVER['HTTP_REFERER'])) return;
+    switch ($this->noRefererAction) { // pass, deny, whois
+      case "deny" : $this->reject(); break;
+      case "whois": if ($this->is_crawler_net) $this->reject(); break;
+      case "pass" :
+      default     : break;
+    }
+  }
+
+  /** Query the whois database
+   * @method whois
+   * @param string host IP/hostname
+   * @param optional boolean raw whether to include the raw whois information (default: FALSE)
+   * @param optional string server whois server to use (default: "whois.arin.net")
+   * @return array whois
+   */
+  function whois($host,$raw=FALSE,$server="whois.arin.net") {
+    if (empty($host)) return false;
+    $fp=@fsockopen($server,43,&$errno,&$errstr,15);
+    if(!$fp) {
+      trigger_error("Could not establish connection to whois server $server:43",E_USER_NOTICE);
+      return false;
+    }
+    fputs($fp,"$host\r\n");
+    $resp = '';
+    while(!feof($fp)) $resp .= fgets($fp,256);
+    fclose($fp);
+    $arr = explode("\n",$resp);
+    foreach ($arr as $item) {
+      $item = trim($item);
+      if ( empty($item) || substr($item,0,1)=='%' || substr($item,0,1)=='#') continue;
+      $pair = explode(':',$item);
+      if (isset($pair[2])) $pair[1].=':'.$pair[2];
+      switch(trim($pair[0])) {
+        case "remarks":
+        case "source" :
+        case "tech-c" :
+        case "admin-c":
+        case "mnt-ref":
+        case "mnt-by" :
+        case "address":
+        case "e-mail" : $whois[trim($pair[0])][]  = trim($pair[1]); break;
+        default       : $whois[trim($pair[0])]    = trim($pair[1]); break;
+      }
+      if ($raw) $whois["raw"] = $resp;
+    }
+    if (!empty($whois["ReferralServer"])) {
+      $refServer = $whois["ReferralServer"];
+      if (substr($refServer,0,8)=='whois://') $refServer = substr($refServer,8);
+      if ($server=="whois.arin.net") $whois = whois($host,$raw,$refServer);
+    }
+    return $whois;
+  }
+
+  /** Network check (where does the request come from)
+   * @method is_crawler_net
+   * @return boolean
+   */
+  function is_crawler_net() {
+    $whois = $this->whois($_SERVER['REMOTE_ADDR']);
+    $netname = strtolower($whois['netname']);
+    $orgname = strtolower($whois['OrgName']);
+    $orgNocName = strtolower($whois['OrgNOCName']);
+    $desc    = strtolower($whois['descr']);
+    foreach ($this->crawler_nets as $bot) {
+      if (strpos($netname,$bot)!==FALSE) return TRUE;
+      if (strpos($desc,$bot)!==FALSE) return TRUE;
+      if (strpos($orgname,$bot)!==FALSE) return TRUE;
+      if (strpos($orgNocName,$bot)!==FALSE) return TRUE;
+    }
+    return FALSE;
+  }
+
   /** Download a file (if the remote UA is not in the reject list)
    * @method sendfile
    * @param string filename File to download
@@ -356,12 +458,9 @@ class download extends hvconfig {
    */
   function sendfile($fname,$dir="") {
     foreach ($this->rejected_bots as $ua) {
-      if (strpos($this->remote_ua,strtolower($ua))!==FALSE) { // kick off bots
-        header($this->rejectheader);
-	echo $this->rejectmsg;
-	exit;
-      }
+      if (strpos($this->remote_ua,strtolower($ua))!==FALSE) $this->reject(); // kick off bots
     }
+    $this->refererCheck();
     if (empty($dir)) $dir = $this->dir;
     $file = $dir."/".$fname;
     if (!file_exists($file)) return FALSE;

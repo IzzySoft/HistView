@@ -176,6 +176,18 @@ class hvconfig {
     */
    $this->max_relnum = 9;
    //===================================================[ Download Settings ]===
+   /** Action for requests w/o referer
+    *  Valid actions are: "pass" (no action), "deny" (reject request), "whois"
+    *  (network check - and reject crawler networks)
+    * @class hvconfig
+    * @attribute string noRefererAction
+    */
+   $this->noRefererAction = "pass";
+   /** Read crawler network names from a file
+    * @class hvconfig
+    * @attribute string crawlerfile
+    */
+   $this->crawlerfile = dirname(__FILE__)."/histview_crawlernets";
    /** Read bots to ignore from a file
     * @class hvconfig
     * @attribute string ignorefile
