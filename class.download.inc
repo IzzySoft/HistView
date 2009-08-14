@@ -391,11 +391,12 @@ class download extends hvconfig {
    * @param string host IP/hostname
    * @param optional boolean raw whether to include the raw whois information (default: FALSE)
    * @param optional string server whois server to use (default: "whois.arin.net")
+   * @param optional integer port (default: 43)
    * @return array whois
    */
-  function whois($host,$raw=FALSE,$server="whois.arin.net") {
+  function whois($host,$raw=FALSE,$server="whois.arin.net",$port=43) {
     if (empty($host)) return false;
-    $fp=@fsockopen($server,43,&$errno,&$errstr,15);
+    $fp=@fsockopen($server,$port,&$errno,&$errstr,15);
     if(!$fp) {
       trigger_error("Could not establish connection to whois server $server:43",E_USER_NOTICE);
       return false;
@@ -409,7 +410,7 @@ class download extends hvconfig {
       $item = trim($item);
       if ( empty($item) || substr($item,0,1)=='%' || substr($item,0,1)=='#') continue;
       $pair = explode(':',$item);
-      if (isset($pair[2])) $pair[1].=':'.$pair[2];
+      if (count($pair)>2) for ($i=2;$i<count($pair);++$i) $pair[1].=':'.$pair[$i];
       switch(trim($pair[0])) {
         case "remarks":
         case "source" :
@@ -426,7 +427,15 @@ class download extends hvconfig {
     if (!empty($whois["ReferralServer"])) {
       $refServer = $whois["ReferralServer"];
       if (substr($refServer,0,8)=='whois://') $refServer = substr($refServer,8);
-      if ($server=="whois.arin.net") $whois = whois($host,$raw,$refServer);
+      elseif (substr($refServer,0,9)=='rwhois://') $refServer = substr($refServer,9);
+      if ( preg_match('|^(.*)\:(\d+)/{0,1}$|',$refServer,$match) ) {
+        $port = $match[2]; $refServer = $match[1];
+      } else $port = 43;
+      if ($server=="whois.arin.net") {
+        $who = whois($host,$raw,$refServer,$port);
+        if (count($who)<3) $whois = array_merge($whois,$who);
+        else $whois = $who;
+      }
     }
     return $whois;
   }
