@@ -23,8 +23,6 @@ require_once(dirname(__FILE__)."/class.hvconfig.inc");
  * @version $Revision$ $Date$
  */
 class histview extends hvconfig {
-  var $hv_version = "0.1.6";
-  var $homepage= "http://projects.izzysoft.de/trac/histview";
   var $use_dlclass = FALSE;
   var $umark;  # user defined marks
   var $umarks; # user defined marks

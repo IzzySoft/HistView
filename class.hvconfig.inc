@@ -249,5 +249,9 @@ class hvconfig {
    // file is located in - we include it here to override the defaults:
    if (file_exists(dirname(__FILE__)."/hv-localconf.inc"))
      include(dirname(__FILE__)."/hv-localconf.inc");
+   //------------------------------------------------------[ internal stuff ]---
+   // please don't touch this ;)
+   $this->hv_version = "0.1.7";
+   $this->homepage = "http://projects.izzysoft.de/trac/histview";
  }
 }
