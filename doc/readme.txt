@@ -60,11 +60,11 @@ of PHP 4 itself - and some Web server that supports PHP 4.
 Up to a certain degree, your history files must look like mine - I mean,
 syntactically. That is, each line must be clearly identifyable:
 Lines starting with "#", "$" or "--" are treated as comments and are ignored
-(you may configure these "identifiers" inside of histview.inc to add/remove
-identifiers). The line naming the version must have a distinct identifier
-(I use the syntax "v<version-number>", so the "v" is the identifier here).
-All identifiers can be configured via the histview::set_mark() method. See
-the example histview.php included with this package for more information.
+(you may configure these "identifiers", see below, to add/remove identifiers).
+The line naming the version must have a distinct identifier (I use the syntax
+"v<version-number>", so the "v" is the identifier here). All identifiers can
+be configured via the histview::set_mark() method. See the example histview.php
+included with this package for more information.
 
 ===============================================================================
 

@@ -12,6 +12,10 @@ v0.1.7
   to those. Use the histview_crawlernets file to specify their network information
   (one spec per line, all lowercase). These will be checked against the whois
   information for 'netname', 'OrgName', 'OrgNOCName', and 'descr'.
+* the histview.inc file has been renamed to class.histview.inc. If you're afraid
+  you may miss to update some of your scripts on an upgrade, you may either
+  create a symlink (preferred method on Linux/Unix systems), or create a dummy
+  histview.inc just including/requiring the real one.
 
 v0.1.6 (01.01.2009)
 -------------------

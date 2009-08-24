@@ -46,7 +46,7 @@ if (!empty($_REQUEST["file"])) {
 }
 
 #-----------------------------------------------[ Display the history file ]---
-include("histview.inc");
+require_once("class.histview.inc");
 $file = $dirs["tar"]."/".strtolower($prog).".hist"; // ChangeLog to parse
 # Simple method, no download links to provide:
 #$hv = new histview($file);
