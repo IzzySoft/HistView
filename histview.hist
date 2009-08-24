@@ -3,7 +3,7 @@ $Id$
 History for HistView
 ====================
 
-v0.1.7
+v0.1.7 (24.08.2009)
 -------------------
 + adding referer check. Options for noRefererAction (empty referer) include
   "pass", "deny", and "whois" (check for crawler/bot nets)
@@ -16,6 +16,7 @@ v0.1.7
   you may miss to update some of your scripts on an upgrade, you may either
   create a symlink (preferred method on Linux/Unix systems), or create a dummy
   histview.inc just including/requiring the real one.
+* updated documentation
 
 v0.1.6 (01.01.2009)
 -------------------

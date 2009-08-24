@@ -100,6 +100,10 @@ additional settings, again having suitable defaults.
 As example, I provided histview.php with this package - which is set up to
 display histview.hist (the history file of HistView) as default. You can use
 this file for a quick start.
+Also, filelist.php is provided as an example on how to create file lists using
+histview and the download class. dl_latest.php demonstrates how to use the
+download class to provide an alias to the always latest version of a given
+program.
 For a more detailed documentation, please visit the project site at
 http://projects.izzysoft.de/trac/histview. For a complete reference to the
 methods, please refer to the Api documentation shipping with the distribution.

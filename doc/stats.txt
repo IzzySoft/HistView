@@ -37,11 +37,14 @@ Here is what the columns are intended for:
 * http_user_agent: This helps you to identify bots (together with the remote_addr
      column) so you can add them to either the ignore or the reject file, i.e. to
      prevent them from increasing your DL counter (or from downloading at all)
-     for the future
+     for the future. You may also want to compare the agent provided here with the
+     source address from remote_addr, as some crawlers (especially from MS)
+     tend to "mask" themselves, pretending to be "human" browsers. Those are
+     candidates for the crawlernets file then.
 
 Having said that, after you applied the wanted changes (deleting wrong counters,
-adding bots to the ignore/reject file), you may want to "anonymize" the columns.
-You could:
+adding bots to the ignore/reject/crawlernets file), you may want to "anonymize"
+the columns. You could:
 
 * truncate the referrer down to the domain
 * replace the remote_addr by a hash (or even by NULL)
