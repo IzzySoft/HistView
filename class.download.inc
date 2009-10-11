@@ -50,7 +50,7 @@ class download extends hvconfig {
     $this->set_bots("ignore",$this->ignorefile);
     $this->set_bots("reject",$this->rejectfile);
     if (is_array($this->db)) { // setup default db
-      $this->db_setup($this->db["host"],$this->db["database"],$this->db["user"],$this->db["pass"],$this->db["table"]);
+      $this->db_setup($this->db["host"],$this->db["database"],$this->db["user"],$this->db["pass"],$this->db["table"],$this->db["limitTable"]);
     }
     $this->set_statisticsmode($this->statisticsmode); // make sure stats are disabled w/o database
   }
@@ -146,11 +146,11 @@ class download extends hvconfig {
   function set_statisticsmode($mode) {
     $valid_modes = array(0,1);
     if (!is_int($mode) || !in_array($mode,$valid_modes)) {
-      trigger_error("Invalid value '$mode' for statisticsmode ignored",E_USER_ERROR);
+      trigger_error("Invalid value '$mode' for statisticsmode ignored",E_USER_WARNING);
       return FALSE;
     }
     if ($mode==1 && (empty($this->dbhost)||empty($this->database)||empty($this->dbuser)||empty($this->dbtable))) {
-      trigger_error("Cannot enable statistics mode - invalid database settings (no dbhost, database, dbuser, and/or dbtable configured)",E_USER_ERROR);
+      trigger_error("Cannot enable statistics mode - invalid database settings (no dbhost, database, dbuser, and/or dbtable configured)",E_USER_WARNING);
       $this->statisticsmode = 0;
       return FALSE;
     }
@@ -459,6 +459,60 @@ class download extends hvconfig {
     return FALSE;
   }
 
+  /** Check for download limits and reject the request if they are exceeded
+   * @method limit_check
+   * @param string file name of the downloaded file
+   */
+  function limit_check($file) {
+    if (!$this->dlFileLimit) return; // Limits are disabled
+    if ( $this->dlLimitAutopurge ) $this->limit_purge();
+    foreach ($this->ext as $type=>$ext) {
+      preg_match("/.*(${ext})\$/",$file,$match);
+      if (!empty($match[1])) break;
+    }
+    preg_match($this->mask[$type],$file,$matches);
+    $prog = $matches[1];
+    if ( empty($prog) ) $prog = $file;
+    require_once ( "class.db_mysql.inc" );
+    $db = new db_mysql;
+    $db->Host     = $this->dbhost;
+    $db->Database = $this->database;
+    $db->User     = $this->dbuser;
+    $db->Password = $this->dbpass;
+    $db->Halt_On_Error = "no";
+    $query = "INSERT INTO ".$this->dbLimitTable." (dl_date,prog,remote_addr,http_user_agent)"
+           . " VALUES (SYSDATE(),'$prog','".$_SERVER["REMOTE_ADDR"]."','".$_SERVER["HTTP_USER_AGENT"]."')";
+    if (!@$db->query($query)) {
+      trigger_error("Failed to update the database: ".$db->Error." (".$db->Errno.")",E_USER_WARNING);
+      return;
+    }
+    $query = "SELECT COUNT(dl_date) AS num FROM " . $this->dbLimitTable
+           . " WHERE remote_addr='".$_SERVER["REMOTE_ADDR"]."'"
+           . "   AND prog='$prog'"
+           . "   AND dl_date > SYSDATE() - INTERVAL ".$this->dlTimeLimit." SECOND";
+    $db->query($query);
+    $db->next_record();
+    if ( $db->f('num') > $this->dlFileLimit ) $this->reject();
+  }
+
+  /** Purge the limits table
+   * @method limit_purge
+   */
+  function limit_purge() {
+    require_once ( "class.db_mysql.inc" );
+    $db = new db_mysql;
+    $db->Host     = $this->dbhost;
+    $db->Database = $this->database;
+    $db->User     = $this->dbuser;
+    $db->Password = $this->dbpass;
+    $db->Halt_On_Error = "no";
+    $query = "DELETE FROM ".$this->dbLimitTable." WHERE dl_date < SYSDATE() - INTERVAL ".$this->dlTimeLimit." SECOND";
+    if (!$db->query($query)) {
+      trigger_error("Failed to update the database: ".$db->Error." (".$db->Errno.")",E_USER_NOTICE);
+      return;
+    }
+  }
+
   /** Download a file (if the remote UA is not in the reject list)
    * @method sendfile
    * @param string filename File to download
@@ -473,6 +527,7 @@ class download extends hvconfig {
     if (empty($dir)) $dir = $this->dir;
     $file = $dir."/".$fname;
     if (!file_exists($file)) return FALSE;
+    $this->limit_check($fname);
     if ($fd = fopen ($file,"rb")) {
       $this->dbcounter($fname);
       $fsize = filesize($file);
@@ -516,7 +571,7 @@ class download extends hvconfig {
       $db->User     = $this->dbuser;
       $db->Password = $this->dbpass;
       $db->Halt_On_Error = "no";
-      @$db->query($query) || trigger_error("Failed to update the database: ".$db->Error." (".$db->Errno.")",E_USER_ERROR);
+      @$db->query($query) || trigger_error("Failed to update the database: ".$db->Error." (".$db->Errno.")",E_USER_WARNING);
     }
   }
 
@@ -527,13 +582,15 @@ class download extends hvconfig {
    * @param string user DB User to connect with
    * @param string passwd Password to use
    * @param string table Name of the download table
+   * @param string limitTable Name of the download limits table
    */
-  function db_setup($host,$db,$user,$pass,$table) {
+  function db_setup($host,$db,$user,$pass,$table,$limitTable) {
     $this->dbhost   = $host;
     $this->database = $db;
     $this->dbuser   = $user;
     $this->dbpass   = $pass;
     $this->dbtable  = $table;
+    $this->dbLimitTable = $limitTable;
   }
 
   /** Send latest version

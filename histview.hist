@@ -3,6 +3,16 @@ $Id$
 History for HistView
 ====================
 
+v0.1.8
+-------------------
++ adding the possibility of download limits to the downloader class. This
+  allows you to restrict downloads per IP and program to a given number within
+  a given time frame (see doc/limits.txt) - limiting those ones who download
+  entire directory trees (i.e. all available versions of a given prog).
+* replaced the E_USER_ERROR by E_USER_WARNING in the download class, since
+  the former would still stop the script processing (and thus the download
+  to fail, just for statistical issues - not nice)
+
 v0.1.7 (24.08.2009)
 -------------------
 + adding referer check. Options for noRefererAction (empty referer) include

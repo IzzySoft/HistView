@@ -1,0 +1,80 @@
+Limit Downloads by IP+Prog
+==========================
+
+If you find your bandwith wasted by crawlers downloading everything (especially
+every single version of a certain file), and you cannot catch them with one of
+the other algorithms (i.e. no specific user agent and IP), here's a different
+approach to block them off: Limit the amount of downloads per prog and IP. This
+requires an additional table in the database, and is thus disabled by default.
+If you want to use this feature, you will first have to create this table in the
+configured database:
+
+CREATE TABLE hvlimits (
+  dl_date	DATETIME, -- 'YYYY-MM-DD HH:MM:SS'
+  prog		VARCHAR(30),
+  remote_addr	VARCHAR(15), -- IPv4
+  http_user_agent VARCHAR(255)
+);
+
+
+The columns use the same names as in the statistics table (see stats.txt), but
+the purpose is different: With this feature enabled (i.e. $dlFileLimit > 0), a
+new record will be inserted on each download request. After this, HistView
+checks the table: If for the requesting IP and the requested program there are
+already more than $dlFileLimit download attempts recorded within the last
+$dlTimeLimit seconds, the download will be refused, and $rejectmsg is instead
+displayed to the downloader.
+
+
+Example
+-------
+
+An example to visualize this. Imagine the following settings:
+$dlFileLimit = 5;
+$dlTimeLimit = 300;
+Plus your program "myprog" available as RPM, DEB and TGZ. Now some user tries
+to download all 3 types of the latest version, each one time. And let's assume
+these downloads are finished in less than 300s. So at the end, there are 3
+entries for him in our table for "myprog" (since we cound all 3 requests
+belonging to the same file). The user succeeded with all 3 downloads.
+
+Now he decides to download the previous version as well - and will succeed for
+the next 2 requests. On the 3rd, the following would happen (assumed we are
+still in the 300s frame):
+- a new entry would be made into our table
+- the check finds 6 entries for this IP and prog within the last 300s
+- 6 > 5, i.e. our configured limit has been exceeded
+- this download will be cancelled
+
+If he now tries again and again, he will still be rejected - until pausing for
+300s (our configured window). After that, he may try again and succeed.
+
+Conclusion: Scripted mass downloads would have trouble, and stop after reaching
+our limit - which is exactly what we wanted. If we find the window to small,
+we can increase $dlTimeLimit accordingly.
+
+
+Database cleaning
+-----------------
+
+Since the data in our table is of no use once it is older than $interval
+seconds, HostView will automatically purge older values if you set $dlLimitAutopurge
+to TRUE (recommended setting). Of course this requires some privileges on the
+table used - with the example configuration, this would be:
+
+GRANT DELETE ON hvlimits TO guest@localhost IDENTIFIED BY 'guest';
+
+You may wish to temporarily set $dlLimitAutopurge to FALSE in order to check for
+abusing IPs (and agents). But to protect the privacy of your users, you shouldn't
+do this longer than necessary or set up other purge jobs to be run after you
+evaluated what you needed to.
+
+If for some other reasons you cannot use the AutoPurge functionality (e.g. you
+have security concerns giving the web process the DELETE permission), you may
+want to setup a cron task (or run a manual purge). The statement you would need
+for this probably looks like this:
+
+DELETE FROM hvlimits WHERE dl_date < SYSDATE() - INTERVAL 300 SECOND;
+
+Where you may want to replace the "300" by the age of the oldest entry you wish
+to keep in the table.

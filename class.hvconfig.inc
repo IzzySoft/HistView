@@ -229,6 +229,37 @@ class hvconfig {
     * @attribute integer statisticsmode
     */
    $this->statisticsmode = 1;
+   //-----------------------------------------------------[ Download Limits ]---
+   /** Limit the download per IP and prog to a given number within a given time.
+    *  If set to 0, there will be no limit. If you want to use this, keep in
+    *  mind there may be good reasons for multiple downloads of the same prog,
+    *  e.g. if you provide multiple formats (RPM,DEB,TGZ) - so a good number
+    *  for the limit is the number of formats provided plus a "chance" for trouble,
+    *  say formats + 2
+    * @class hvconfig
+    * @attribute integer dlFileLimit
+    */
+   $this->dlFileLimit = 0;
+   /** Time interval (in seconds) to monitor for limits. Make it small enough,
+    *  but not too small. The best setting also depends on the average size of
+    *  the files you offer for download, your setting for $dlFileLimit, and the
+    *  assumed transfer rates. Say you assume a single download to be done in
+    *  30s, and you want to permit 5 downloads, they would take 2:30 minutes.
+    *  If a bot/crawler is firing them, it's done by that. Add a bit for
+    *  eventual trouble in routing, so you should be fine with 5min (300s).
+    *  Remember that every *ATTEMPT* will be considered, so this value should
+    *  be fine in this case.
+    * @class hvconfig
+    * @attribute integer dlTimeLimit
+    */
+   $this->dlTimeLimit = 300;
+   /** Shall the database table recording data to check the download attempts
+    *  for limiting them be purged automatically? This is recommended, so the
+    *  sample config sets this to TRUE.
+    * @class hvconfig
+    * @attribute boolean dlLimitAutopurge
+    */
+   $this->dlLimitAutopurge = TRUE;
    //-----------------------------------------------------[ Database to use ]---
    /** Database to store download statistics. Irrelevant (i.e. not used) when
     *  statistics are turned off (statisticsmode=0). To override these settings
@@ -238,11 +269,12 @@ class hvconfig {
     * @class hvconfig
     * @attribute array db
     */
-   $this->db["host"]     = "localhost";
-   $this->db["database"] = "webstat";
-   $this->db["user"]     = "guest";
-   $this->db["pass"]     = "guest";
-   $this->db["table"]    = "downloads";
+   $this->db["host"]       = "localhost";
+   $this->db["database"]   = "webstat";
+   $this->db["user"]       = "guest";
+   $this->db["pass"]       = "guest";
+   $this->db["table"]      = "downloads";
+   $this->db["limitTable"] = "hvlimits";
    //------------------------------------------[ local/personal adjustments ]---
    // to make your future updates easier, place your personal preferences into
    // a personal file named "hv-localconf.inc" in the same directory as this
