@@ -175,6 +175,17 @@ class hvconfig {
     * @attribute integer max_relnum
     */
    $this->max_relnum = 9;
+   /** Map filenames to prognames. If the filename does not directly reflect
+    *  the prog name you want to record into your stats table, you can set up
+    *  a map entry here. Example: A new version of your lib package is not
+    *  100% backwards compatible, so you name the new packages "mylib2"
+    *  instead of simply "mylib" as it was before. But for statistics you
+    *  do not want a new progname. So in your hv-localconf.inc, you write:
+    *  $this->map_names['mylib2'] = 'mylib';
+    * @class hvconfig
+    * @attribute array map_names (array[filename]=progname]
+    */
+   $this->map_names = array();
    //===================================================[ Download Settings ]===
    /** Action for requests w/o referer
     *  Valid actions are: "pass" (no action), "deny" (reject request), "whois"

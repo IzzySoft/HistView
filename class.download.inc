@@ -459,13 +459,12 @@ class download extends hvconfig {
     return FALSE;
   }
 
-  /** Check for download limits and reject the request if they are exceeded
-   * @method limit_check
-   * @param string file name of the downloaded file
+  /** Get the prog name from the file name
+   * @method protected getProgName
+   * @param string file name of the file
+   * @return string prog name of the prog
    */
-  function limit_check($file) {
-    if (!$this->dlFileLimit) return; // Limits are disabled
-    if ( $this->dlLimitAutopurge ) $this->limit_purge();
+  function getProgname($file) {
     foreach ($this->ext as $type=>$ext) {
       preg_match("/.*(${ext})\$/",$file,$match);
       if (!empty($match[1])) break;
@@ -473,6 +472,18 @@ class download extends hvconfig {
     preg_match($this->mask[$type],$file,$matches);
     $prog = $matches[1];
     if ( empty($prog) ) $prog = $file;
+    if ( empty($this->map_names[$prog]) ) return $prog;
+    return $this->map_names[$prog];
+  }
+
+  /** Check for download limits and reject the request if they are exceeded
+   * @method limit_check
+   * @param string file name of the downloaded file
+   */
+  function limit_check($file) {
+    if (!$this->dlFileLimit) return; // Limits are disabled
+    if ( $this->dlLimitAutopurge ) $this->limit_purge();
+    $prog = $this->getProgname($file);
     require_once ( "class.db_mysql.inc" );
     $db = new db_mysql;
     $db->Host     = $this->dbhost;
@@ -553,14 +564,9 @@ class download extends hvconfig {
         return;
       }
     }
-    foreach ($this->ext as $type=>$ext) {
-      preg_match("/.*(${ext})\$/",$file,$match);
-      if (!empty($match[1])) break;
-    }
-    preg_match($this->mask[$type],$file,$matches);
-    if (!empty($matches[1])) {
+    $name = $this->getProgname($file);
+    if (!empty($name)) {
       $date = date('Y-m-d');
-      $name = $matches[1];
       $version = $matches[2].".".$matches[3].".".$matches[4];
       $query = "INSERT INTO ".$this->dbtable." (dl_date,prog,newver,referrer,remote_addr,http_user_agent)"
              . " VALUES ('$date','$name','$version','".$_SERVER['HTTP_REFERER']."','".$_SERVER["REMOTE_ADDR"]."','".$_SERVER["HTTP_USER_AGENT"]."')";

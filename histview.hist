@@ -12,6 +12,9 @@ v0.1.8
 * replaced the E_USER_ERROR by E_USER_WARNING in the download class, since
   the former would still stop the script processing (and thus the download
   to fail, just for statistical issues - not nice)
++ adding possibility to map filenames to prognames for the download class,
+  to e.g. map two different branches to the same prog ('mylib' and 'mylib2'
+  can both point to 'mylib' this way)
 
 v0.1.7 (24.08.2009)
 -------------------
