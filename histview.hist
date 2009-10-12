@@ -15,6 +15,11 @@ v0.1.8
 + adding possibility to map filenames to prognames for the download class,
   to e.g. map two different branches to the same prog ('mylib' and 'mylib2'
   can both point to 'mylib' this way)
+! histview::set_max_relnum was doing nothing - now it does something
+  (hey, that's an improvement, huh?)
+* if the optional second parameter to the constructor of histview was omitted,
+  it now falls back to the "basename" of the first (i.e. truncating the path
+  and file extension from it)
 
 v0.1.7 (24.08.2009)
 -------------------

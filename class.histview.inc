@@ -37,7 +37,9 @@ class histview extends hvconfig {
   /** Create an instance and read the input file into the internal array
    * @constructor histview
    * @param string infile input file name
-   * @param optional string basename basename for files (e.g. "histview" for histview-0.1.3-izzy1.noarch.rpm)
+   * @param optional string basename basename for files (e.g. "histview" for
+   *  histview-0.1.3-izzy1.noarch.rpm). If not set, it falls back to the
+   *  filename of $infile w/o path and extension.
    */
   function histview($infile,$name="") {
     $this->hvconfig();
@@ -45,7 +47,11 @@ class histview extends hvconfig {
       case "internal" : $this->use_dlclass(TRUE); break;
       default         : $this->use_dlclass(FALSE); break;
     }
-    if (!empty($name)) $this->basename = $name;
+    if ( empty($name) ) {
+      $pinfo = pathinfo($infile);
+      $this->basename = $pinfo['filename'];
+    }
+    else $this->basename = $name;
     $this->lastchange = "Last modified: ".date("F d Y",filemtime($infile));
     $this->input = file($infile);
     $this->idx->ver  = 0;
@@ -161,6 +167,7 @@ class histview extends hvconfig {
    * @param integer relnum max release number to check for
    */
   function set_max_relnum($num) {
+    if ( is_int($num) ) $this->max_relnum = $num;
   }
 
   /** Override default identifier mark settings
