@@ -294,7 +294,7 @@ class hvconfig {
      include(dirname(__FILE__)."/hv-localconf.inc");
    //------------------------------------------------------[ internal stuff ]---
    // please don't touch this ;)
-   $this->hv_version = "0.1.7";
+   $this->hv_version = "0.1.8";
    $this->homepage = "http://projects.izzysoft.de/trac/histview";
  }
 }

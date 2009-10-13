@@ -3,7 +3,7 @@ $Id$
 History for HistView
 ====================
 
-v0.1.8
+v0.1.8 (13.10.2009)
 -------------------
 + adding the possibility of download limits to the downloader class. This
   allows you to restrict downloads per IP and program to a given number within
