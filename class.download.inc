@@ -159,7 +159,7 @@ class download extends hvconfig {
   }
 
   /** Setup bots to be ignored/rejected
-   * @method private add_bot
+   * @method protected add_bot
    * @param mixed bot string or array of strings (substr of botnames)
    * @param string cat category to add the bot to (ignore,reject)
    */
@@ -247,7 +247,7 @@ class download extends hvconfig {
 
   /** Generate list of all files incl. basic information
    *  Is called from method scan_dir
-   * @method private interprete_filelist
+   * @method protected interprete_filelist
    * @param optional integer dirnum If you run multiple directories via an array, you can store the index here. Will be added to the DL URL, when internal DL method is used.
    */
   function interprete_filelist($dirnum="") {
@@ -284,7 +284,7 @@ class download extends hvconfig {
   }
 
   /** Sort array by given key
-   * @method private ar_sort_by
+   * @method protected ar_sort_by
    * @param array arr Array to sort
    * @param string orderby Field to order by
    * @param optional boolean rev Reverse order (default:false)
@@ -484,13 +484,7 @@ class download extends hvconfig {
     if (!$this->dlFileLimit) return; // Limits are disabled
     if ( $this->dlLimitAutopurge ) $this->limit_purge();
     $prog = $this->getProgname($file);
-    require_once ( "class.db_mysql.inc" );
-    $db = new db_mysql;
-    $db->Host     = $this->dbhost;
-    $db->Database = $this->database;
-    $db->User     = $this->dbuser;
-    $db->Password = $this->dbpass;
-    $db->Halt_On_Error = "no";
+    $db = $this->db_init();
     $query = "INSERT INTO ".$this->dbLimitTable." (dl_date,prog,remote_addr,http_user_agent)"
            . " VALUES (SYSDATE(),'$prog','".$_SERVER["REMOTE_ADDR"]."','".$_SERVER["HTTP_USER_AGENT"]."')";
     if (!@$db->query($query)) {
@@ -510,13 +504,7 @@ class download extends hvconfig {
    * @method limit_purge
    */
   function limit_purge() {
-    require_once ( "class.db_mysql.inc" );
-    $db = new db_mysql;
-    $db->Host     = $this->dbhost;
-    $db->Database = $this->database;
-    $db->User     = $this->dbuser;
-    $db->Password = $this->dbpass;
-    $db->Halt_On_Error = "no";
+    $db = $this->db_init();
     $query = "DELETE FROM ".$this->dbLimitTable." WHERE dl_date < SYSDATE() - INTERVAL ".$this->dlTimeLimit." SECOND";
     if (!$db->query($query)) {
       trigger_error("Failed to update the database: ".$db->Error." (".$db->Errno.")",E_USER_NOTICE);
@@ -570,13 +558,7 @@ class download extends hvconfig {
       $version = $matches[2].".".$matches[3].".".$matches[4];
       $query = "INSERT INTO ".$this->dbtable." (dl_date,prog,newver,referrer,remote_addr,http_user_agent)"
              . " VALUES ('$date','$name','$version','".$_SERVER['HTTP_REFERER']."','".$_SERVER["REMOTE_ADDR"]."','".$_SERVER["HTTP_USER_AGENT"]."')";
-      require_once ( "class.db_mysql.inc" );
-      $db = new db_mysql;
-      $db->Host     = $this->dbhost;
-      $db->Database = $this->database;
-      $db->User     = $this->dbuser;
-      $db->Password = $this->dbpass;
-      $db->Halt_On_Error = "no";
+      $db = $this->db_init();
       @$db->query($query) || trigger_error("Failed to update the database: ".$db->Error." (".$db->Errno.")",E_USER_WARNING);
     }
   }
@@ -597,6 +579,24 @@ class download extends hvconfig {
     $this->dbpass   = $pass;
     $this->dbtable  = $table;
     $this->dbLimitTable = $limitTable;
+  }
+
+  /** Initialize DB and hand-out a handle to it
+   * @method protected db_init
+   * @return ref object db handle to the database class
+   */
+  function &db_init() {
+    static $db;
+    if ( !isset($db->User) ) {
+      require_once ( "class.db_mysql.inc" );
+      $db = new db_mysql;
+      $db->Host     = $this->dbhost;
+      $db->Database = $this->database;
+      $db->User     = $this->dbuser;
+      $db->Password = $this->dbpass;
+      $db->Halt_On_Error = "no";
+    }
+    return $db;
   }
 
   /** Send latest version

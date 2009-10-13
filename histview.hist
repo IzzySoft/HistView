@@ -20,6 +20,7 @@ v0.1.8
 * if the optional second parameter to the constructor of histview was omitted,
   it now falls back to the "basename" of the first (i.e. truncating the path
   and file extension from it)
+* minor restructuring of the download class
 
 v0.1.7 (24.08.2009)
 -------------------
