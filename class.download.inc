@@ -554,6 +554,11 @@ class download extends hvconfig {
     }
     $name = $this->getProgname($file);
     if (!empty($name)) {
+      foreach ($this->ext as $type=>$ext) {
+        preg_match("/.*(${ext})\$/",$file,$match);
+        if (!empty($match[1])) break;
+      }
+      preg_match($this->mask[$type],$file,$matches);
       $date = date('Y-m-d');
       $version = $matches[2].".".$matches[3].".".$matches[4];
       $query = "INSERT INTO ".$this->dbtable." (dl_date,prog,newver,referrer,remote_addr,http_user_agent)"

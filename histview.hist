@@ -3,6 +3,10 @@ $Id$
 History for HistView
 ====================
 
+v0.1.9
+-------------------
+! download counter was broken: version number was no longer recorded
+
 v0.1.8 (13.10.2009)
 -------------------
 + adding the possibility of download limits to the downloader class. This
