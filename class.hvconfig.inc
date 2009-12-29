@@ -194,6 +194,17 @@ class hvconfig {
     * @attribute string noRefererAction
     */
    $this->noRefererAction = "pass";
+   /** IP Blacklist file (e.g. from http://sblam.com/blacklist.txt)
+    * @class hvconfig
+    * @attribute string blacklistfile
+    */
+   $this->blacklistfile = dirname(__FILE__)."/hv_ipblacklist";
+   /** Action to perform when remote address is contained in blacklist file
+    *  Valid actions are: "pass" (no action), "deny" (reject request)
+    * @class hvconfig
+    * @attribute string blacklistAction
+    */
+   $this->blacklistAction = "pass";
    /** Read crawler network names from a file
     * @class hvconfig
     * @attribute string crawlerfile
@@ -294,7 +305,7 @@ class hvconfig {
      include(dirname(__FILE__)."/hv-localconf.inc");
    //------------------------------------------------------[ internal stuff ]---
    // please don't touch this ;)
-   $this->hv_version = "0.1.8";
+   $this->hv_version = "0.1.7";
    $this->homepage = "http://projects.izzysoft.de/trac/histview";
  }
 }

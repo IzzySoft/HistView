@@ -373,6 +373,16 @@ class download extends hvconfig {
     exit;
   }
 
+  /** Handle IP blacklist
+   * @method blacklistCheck
+   */
+  function blacklistCheck() {
+    if ( $this->blacklistAction != 'deny' || !file_exists($this->blacklistfile) ) return;
+    static $blacklist;
+    if (empty($blacklist)) $blacklist = file_get_contents($this->blacklistfile);
+    if ( preg_match('|^'.$_SERVER['REMOTE_ADDR'].'$|m',$blacklist) ) $this->reject();
+  }
+
   /** Handle request w/o referer
    * @method refererCheck
    */
@@ -522,6 +532,7 @@ class download extends hvconfig {
     foreach ($this->rejected_bots as $ua) {
       if (strpos($this->remote_ua,strtolower($ua))!==FALSE) $this->reject(); // kick off bots
     }
+    $this->blacklistCheck();
     $this->refererCheck();
     if (empty($dir)) $dir = $this->dir;
     $file = $dir."/".$fname;
