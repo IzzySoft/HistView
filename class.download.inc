@@ -263,7 +263,7 @@ class download extends hvconfig {
 	$version = $matches[2].".".$matches[3].".".$matches[4];
 	$sortver = $matches[2]*1000000+$matches[3]*10000+$matches[4]*100;
 	if (isset($matches[5])) {
-	  $version .= ".".$matches[5];
+	  $version .= "-".$matches[5];
 	  $sortver += $matches[5];
 	}
 	switch ($this->dltype) {
