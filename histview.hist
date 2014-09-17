@@ -7,6 +7,7 @@ v0.1.9
 -------------------
 ! download counter was broken: version number was no longer recorded
 + added IP blacklist functionality to download class
+* class download: add REL=nofollow to download links
 
 v0.1.8 (13.10.2009)
 -------------------

@@ -255,30 +255,30 @@ class download extends hvconfig {
     foreach($this->files as $file) {
       foreach ($this->ext as $type=>$ext) {
         preg_match("/.*(${ext})\$/",$file,$match);
-	if (!empty($match[1])) break;
+        if (!empty($match[1])) break;
       }
       preg_match($this->mask[$type],$file,$matches);
       if (!empty($matches[1])) {
         $name = $matches[1];
-	$version = $matches[2].".".$matches[3].".".$matches[4];
-	$sortver = $matches[2]*1000000+$matches[3]*10000+$matches[4]*100;
-	if (isset($matches[5])) {
-	  $version .= "-".$matches[5];
-	  $sortver += $matches[5];
-	}
-	switch ($this->dltype) {
-	  case "internal" :
-	  	$linkto = $_SERVER["PHP_SELF"]."?file=$file";
-		if (!empty($dirnum)||$dirnum===0) $linkto .= $this->argsep."dirnum=$dirnum";
-		break;
-	  default         :
-	  	$linkto = substr($this->dir,strlen($this->basedir))."/$file";
-		break;
-	}
-	$ilink = "<A HREF='$linkto'>".$this->icon[$type]."</A>";
-	$flink = "<A HREF='$linkto'>$file</A>";
-	$this->filelist[$i] = array("dir"=>$this->dir,"name"=>$name,"type"=>$type,"version"=>$version,"sortver"=>$sortver,"file"=>$file,"icon"=>$this->icon[$type],"ilink"=>$ilink,"flink"=>$flink);
-	++$i;
+        $version = $matches[2].".".$matches[3].".".$matches[4];
+        $sortver = $matches[2]*1000000+$matches[3]*10000+$matches[4]*100;
+        if (isset($matches[5])) {
+          $version .= "-".$matches[5];
+          $sortver += $matches[5];
+        }
+        switch ($this->dltype) {
+          case "internal" :
+            $linkto = $_SERVER["PHP_SELF"]."?file=$file";
+            if (!empty($dirnum)||$dirnum===0) $linkto .= $this->argsep."dirnum=$dirnum";
+            break;
+          default         :
+            $linkto = substr($this->dir,strlen($this->basedir))."/$file";
+            break;
+        }
+        $ilink = "<A HREF='$linkto' REL='nofollow'>".$this->icon[$type]."</A>";
+        $flink = "<A HREF='$linkto' REL='nofollow'>$file</A>";
+        $this->filelist[$i] = array("dir"=>$this->dir,"name"=>$name,"type"=>$type,"version"=>$version,"sortver"=>$sortver,"file"=>$file,"icon"=>$this->icon[$type],"ilink"=>$ilink,"flink"=>$flink);
+        ++$i;
       }
     }
   }
@@ -356,9 +356,9 @@ class download extends hvconfig {
         if (file_exists($basename."_".$this->filelist[$i]["version"].".desc")) $dfile = $basename."_".$this->filelist[$i]["version"].".desc";
         elseif (file_exists($basename.".desc")) $dfile = $basename.".desc";
         else continue;
-	if ($descreplace)
+        if ($descreplace)
           $this->filelist[$i]["desc"] = file_get_contents($dfile);
-	else
+        else
           $this->filelist[$i]["desc"] .= "<BR>".file_get_contents($dfile);
       }
     }
@@ -421,7 +421,7 @@ class download extends hvconfig {
       if ( empty($item) || substr($item,0,1)=='%' || substr($item,0,1)=='#') continue;
       $pair = explode(':',$item);
       if (count($pair)>2) for ($i=2;$i<count($pair);++$i) $pair[1].=':'.$pair[$i];
-      switch(trim($pair[0])) {
+      if (isset($pair[1])) switch(trim($pair[0])) {
         case "remarks":
         case "source" :
         case "tech-c" :
