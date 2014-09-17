@@ -8,6 +8,7 @@ v0.1.9
 ! download counter was broken: version number was no longer recorded
 + added IP blacklist functionality to download class
 * class download: add REL=nofollow to download links
+! some fixes for PHP 5.4 compatibility
 
 v0.1.8 (13.10.2009)
 -------------------

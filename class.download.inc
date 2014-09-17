@@ -258,7 +258,7 @@ class download extends hvconfig {
         if (!empty($match[1])) break;
       }
       preg_match($this->mask[$type],$file,$matches);
-      if (!empty($matches[1])) {
+      if (!empty($matches[1]) && isset($matches[4])) {
         $name = $matches[1];
         $version = $matches[2].".".$matches[3].".".$matches[4];
         $sortver = $matches[2]*1000000+$matches[3]*10000+$matches[4]*100;
@@ -390,7 +390,7 @@ class download extends hvconfig {
     if (!empty($_SERVER['HTTP_REFERER'])) return;
     switch ($this->noRefererAction) { // pass, deny, whois
       case "deny" : $this->reject(); break;
-      case "whois": if ($this->is_crawler_net) $this->reject(); break;
+      case "whois": if ($this->is_crawler_net()) $this->reject(); break;
       case "pass" :
       default     : break;
     }
@@ -406,7 +406,7 @@ class download extends hvconfig {
    */
   function whois($host,$raw=FALSE,$server="whois.arin.net",$port=43) {
     if (empty($host)) return false;
-    $fp=@fsockopen($server,$port,&$errno,&$errstr,15);
+    $fp=@fsockopen($server,$port);
     if(!$fp) {
       trigger_error("Could not establish connection to whois server $server:43",E_USER_NOTICE);
       return false;
@@ -442,7 +442,7 @@ class download extends hvconfig {
         $port = $match[2]; $refServer = $match[1];
       } else $port = 43;
       if ($server=="whois.arin.net") {
-        $who = whois($host,$raw,$refServer,$port);
+        $who = $this->whois($host,$raw,$refServer,$port);
         if (count($who)<3) $whois = array_merge($whois,$who);
         else $whois = $who;
       }
@@ -456,10 +456,10 @@ class download extends hvconfig {
    */
   function is_crawler_net() {
     $whois = $this->whois($_SERVER['REMOTE_ADDR']);
-    $netname = strtolower($whois['netname']);
-    $orgname = strtolower($whois['OrgName']);
-    $orgNocName = strtolower($whois['OrgNOCName']);
-    $desc    = strtolower($whois['descr']);
+    if (isset($whois['netname']))    $netname = strtolower($whois['netname']);       else $netname = '§§§';
+    if (isset($whois['OrgName']))    $orgname = strtolower($whois['OrgName']);       else $orgname = '§§§';
+    if (isset($whois['OrgNOCName'])) $orgNocName = strtolower($whois['OrgNOCName']); else $orgNocName = '§§§';
+    if (isset($whois['descr']))      $desc    = strtolower($whois['descr']);         else $desc = '§§§';
     foreach ($this->crawler_nets as $bot) {
       if (strpos($netname,$bot)!==FALSE) return TRUE;
       if (strpos($desc,$bot)!==FALSE) return TRUE;
@@ -534,7 +534,7 @@ class download extends hvconfig {
     }
     $this->blacklistCheck();
     $this->refererCheck();
-    if (empty($dir)) $dir = $this->dir;
+    if (empty($dir) && isset($this->dir)) $dir = $this->dir;
     $file = $dir."/".$fname;
     if (!file_exists($file)) return FALSE;
     $this->limit_check($fname);
@@ -572,8 +572,9 @@ class download extends hvconfig {
       preg_match($this->mask[$type],$file,$matches);
       $date = date('Y-m-d');
       $version = $matches[2].".".$matches[3].".".$matches[4];
+      if ( isset($_SERVER['HTTP_REFERER']) ) $referer = $_SERVER['HTTP_REFERER']; else $referer = '';
       $query = "INSERT INTO ".$this->dbtable." (dl_date,prog,newver,referrer,remote_addr,http_user_agent)"
-             . " VALUES ('$date','$name','$version','".$_SERVER['HTTP_REFERER']."','".$_SERVER["REMOTE_ADDR"]."','".$_SERVER["HTTP_USER_AGENT"]."')";
+             . " VALUES ('$date','$name','$version','$referer','".$_SERVER["REMOTE_ADDR"]."','".$_SERVER["HTTP_USER_AGENT"]."')";
       $db = $this->db_init();
       @$db->query($query) || trigger_error("Failed to update the database: ".$db->Error." (".$db->Errno.")",E_USER_WARNING);
     }
@@ -588,7 +589,7 @@ class download extends hvconfig {
    * @param string table Name of the download table
    * @param string limitTable Name of the download limits table
    */
-  function db_setup($host,$db,$user,$pass,$table,$limitTable) {
+  function db_setup($host,$db,$user,$pass,$table,$limitTable='hvlimits') {
     $this->dbhost   = $host;
     $this->database = $db;
     $this->dbuser   = $user;
@@ -625,12 +626,13 @@ class download extends hvconfig {
   function send_latest($prog,$type,$dir) {
     if (!empty($dir)) $this->scan_dir($dir);
     $fc = count($this->filelist);
+    $list = array();
     for ($i=0;$i<$fc;++$i) {
       if ($this->filelist[$i]["name"] != $prog) continue;
       if ($this->filelist[$i]["type"] != $type) continue;
       $list[$i] = $this->filelist[$i];
     }
-    if (!is_array($list)) return FALSE;
+    if (empty($list)) return FALSE;
     $list = $this->ar_sort_by($list,"sortver");
     $list = array_merge($list); // re-arrange keys
     $fc = count($list);
