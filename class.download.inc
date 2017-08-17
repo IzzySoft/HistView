@@ -1,6 +1,6 @@
-<?
+<?php
  #############################################################################
- # HistView                                 (c) 2003-2009 by Itzchak Rehberg #
+ # HistView                                 (c) 2003-2017 by Itzchak Rehberg #
  # written by Itzchak Rehberg <devel AT izzysoft DOT de>                     #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/class.hvconfig.inc");
  * @class download
  * @extends hvconfig
  * @author Izzy (devel AT izzysoft DOT de)
- * @copyright (c) 2007-2009 by Itzchak Rehberg and IzzySoft
+ * @copyright (c) 2007-2017 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
  */
 class download extends hvconfig {
@@ -66,11 +66,11 @@ class download extends hvconfig {
       foreach ($bots as $bot) {
         $bot = trim($bot);
         if (empty($bot) || substr($bot,0,1)=="#") continue;
-	switch ($type) {
-	  case "crawler" : $this->crawler_net($bot); break;
-	  case "ignore" : $this->ignore_bot($bot); break;
-	  case "reject" : $this->reject_bot($bot); break;
-	}
+        switch ($type) {
+          case "crawler" : $this->crawler_net($bot); break;
+          case "ignore" : $this->ignore_bot($bot); break;
+          case "reject" : $this->reject_bot($bot); break;
+        }
       }
     }
   }
@@ -167,19 +167,19 @@ class download extends hvconfig {
     switch ($cat) {
       case "ignore" :
         if (is_array($bot)) $this->ignored_bots = array_merge($this->ignored_bots,$bot);
-	elseif (is_string($bot)) $this->ignored_bots[] = $bot;
-	else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
-	break;
+        elseif (is_string($bot)) $this->ignored_bots[] = $bot;
+        else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
+        break;
       case "reject" :
         if (is_array($bot)) $this->rejected_bots = array_merge($this->rejected_bots,$bot);
-	elseif (is_string($bot)) $this->rejected_bots[] = $bot;
-	else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
-	break;
+        elseif (is_string($bot)) $this->rejected_bots[] = $bot;
+        else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
+        break;
       case "crawler" :
         if (is_array($bot)) $this->crawler_nets = array_merge($this->crawler_nets,$bot);
-	elseif (is_string($bot)) $this->crawler_nets[] = $bot;
-	else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
-	break;
+        elseif (is_string($bot)) $this->crawler_nets[] = $bot;
+        else trigger_error("Cannot add this bot(s) - wrong data type.",E_USER_WARNING);
+        break;
     }
   }
 

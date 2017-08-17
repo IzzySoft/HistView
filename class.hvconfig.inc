@@ -1,6 +1,6 @@
-<?
+<?php
  #############################################################################
- # HistView                                 (c) 2003-2009 by Itzchak Rehberg #
+ # HistView                                 (c) 2003-2017 by Itzchak Rehberg #
  # written by Itzchak Rehberg <devel AT izzysoft DOT de>                     #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
@@ -16,7 +16,7 @@
  * @package Api
  * @class hvconfig
  * @author Izzy (devel@izzysoft.de)
- * @copyright (c) 2003-2009 by Itzchak Rehberg and IzzySoft
+ * @copyright (c) 2003-2017 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
  */
 class hvconfig {
@@ -306,6 +306,6 @@ class hvconfig {
    //------------------------------------------------------[ internal stuff ]---
    // please don't touch this ;)
    $this->hv_version = "0.1.7";
-   $this->homepage = "http://projects.izzysoft.de/trac/histview";
+   $this->homepage = "https://github.com/IzzySoft/HistView";
  }
 }

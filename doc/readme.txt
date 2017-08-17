@@ -1,5 +1,5 @@
 # =============================================================================
-# HistView                 (c) 2003-2009 by IzzySoft (devel AT izzysoft DOT de)
+# HistView                 (c) 2003-2017 by IzzySoft (devel AT izzysoft DOT de)
 # -----------------------------------------------------------------------------
 # $Id$
 # -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ histview and the download class. dl_latest.php demonstrates how to use the
 download class to provide an alias to the always latest version of a given
 program.
 For a more detailed documentation, please visit the project site at
-http://projects.izzysoft.de/trac/histview. For a complete reference to the
+https://github.com/IzzySoft/HistView. For a complete reference to the
 methods, please refer to the Api documentation shipping with the distribution.
 
 

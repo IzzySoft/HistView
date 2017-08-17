@@ -1,6 +1,6 @@
-<?
+<?php
  #############################################################################
- # HistView                                 (c) 2003-2007 by Itzchak Rehberg #
+ # HistView                                 (c) 2003-2017 by Itzchak Rehberg #
  # written by Itzchak Rehberg <devel@izzysoft.de>                            #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
@@ -21,7 +21,7 @@ $dl = new download();		# create an instance
 # where "xxxx" stands for any amount of letters/digits/-/_/. and
 # 0.0.0 for the version number
 $dl->set_filetype("tar","/^([\w-\.]+)(\d+)-(\d+)-(\d+).tgz/","tgz","tgz.png");
-$e404 = "";			# Here we store the error (if any)
+$e404 = "";     # Here we store the error (if any)
 
 #=============================================================[ Processing ]===
 #----------------------------------------------[ Was a download requested? ]---
@@ -59,7 +59,7 @@ $dl->add_details(dirname(__FILE__));	# add size, date etc. to the list
     <TD CLASS="head">Date</TD>
     <TD CLASS="head">Description</TD>
   </TR>
-<?
+<?php
 #--------------------------------------------------------------[ File list ]---
 # Here we loop the created file list (array) and create one table row per file
 foreach ($dl->filelist as $file) {

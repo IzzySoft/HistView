@@ -1,6 +1,6 @@
-<?
+<?php
  #############################################################################
- # HistView                                 (c) 2003-2009 by Itzchak Rehberg #
+ # HistView                                 (c) 2003-2017 by Itzchak Rehberg #
  # written by Itzchak Rehberg <devel AT izzysoft DOT de>                     #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/class.hvconfig.inc");
  * @class histview
  * @extends hvconfig
  * @author Izzy (devel@izzysoft.de)
- * @copyright (c) 2003-2009 by Itzchak Rehberg and IzzySoft
+ * @copyright (c) 2003-2017 by Itzchak Rehberg and IzzySoft
  * @version $Revision$ $Date$
  */
 class histview extends hvconfig {
@@ -56,7 +56,7 @@ class histview extends hvconfig {
     $this->input = file($infile);
     $this->idx->ver  = 0;
     $this->idx->mark = 0;
-    $this->copy    = "2003-2009 by Itzchak Rehberg &amp; <A HREF='http://www.izzysoft.de/' "
+    $this->copy    = "2003-2017 by Itzchak Rehberg &amp; <A HREF='http://www.izzysoft.de/' "
                    . "TARGET='_blank'>IzzySoft</A>";
   }
 
@@ -227,8 +227,8 @@ class histview extends hvconfig {
                        $this->version[$this->idx->ver]->num = $tline;
                        return TRUE;
                      } else {
-		       $this->version[$this->idx->ver]->changes[$this->idx->mark]->content .= " $tline";
-		     }
+                       $this->version[$this->idx->ver]->changes[$this->idx->mark]->content .= " $tline";
+                     }
                      break;
       case $this->plus   : ++$this->idx->mark;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->iplus;
@@ -278,15 +278,15 @@ class histview extends hvconfig {
       case "deb" : for ($i=$this->max_relnum;$i>=0;--$i) {
                      $f = trim($this->debbase."/${fname}_".substr($version,1,$pos-2))."-".$this->relname.$i."_";
                      if ($this->arch=="noarch") $f .= "all.deb";
-		     else $f .= $this->arch.".deb";
-		     if (file_exists($f)) break;
-		   }
-		   break;
+                     else $f .= $this->arch.".deb";
+                     if (file_exists($f)) break;
+                   }
+                   break;
       case "rpm" : for ($i=$this->max_relnum;$i>=0;--$i) {
-    		     $f = trim($this->rpmbase."/${fname}-".substr($version,1,$pos-2))."-".$this->relname.$i.".".$this->arch.".rpm";
-		     if (file_exists($f)) break;
-		   }
-		   break;
+                     $f = trim($this->rpmbase."/${fname}-".substr($version,1,$pos-2))."-".$this->relname.$i.".".$this->arch.".rpm";
+                     if (file_exists($f)) break;
+                   }
+                   break;
     }
     if (file_exists($f)) {
       $f = substr($f,strlen($this->basedir));

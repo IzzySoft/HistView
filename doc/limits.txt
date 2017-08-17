@@ -58,7 +58,7 @@ Database cleaning
 -----------------
 
 Since the data in our table is of no use once it is older than $interval
-seconds, HostView will automatically purge older values if you set $dlLimitAutopurge
+seconds, HistView will automatically purge older values if you set $dlLimitAutopurge
 to TRUE (recommended setting). Of course this requires some privileges on the
 table used - with the example configuration, this would be:
 

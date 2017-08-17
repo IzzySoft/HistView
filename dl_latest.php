@@ -1,6 +1,6 @@
-<?
+<?php
  #############################################################################
- # HistView                                 (c) 2003-2009 by Itzchak Rehberg #
+ # HistView                                 (c) 2003-2017 by Itzchak Rehberg #
  # written by Itzchak Rehberg <devel AT izzysoft DOT de>                     #
  # http://www.izzysoft.de/                                                   #
  # ------------------------------------------------------------------------- #
