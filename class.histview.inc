@@ -54,6 +54,7 @@ class histview extends hvconfig {
     else $this->basename = $name;
     $this->lastchange = "Last modified: ".date("F d Y",filemtime($infile));
     $this->input = file($infile);
+    $this->idx = new stdClass();
     $this->idx->ver  = 0;
     $this->idx->mark = 0;
     $this->copy    = "2003-2017 by Itzchak Rehberg &amp; <A HREF='http://www.izzysoft.de/' "
@@ -223,6 +224,7 @@ class histview extends hvconfig {
     switch ($t1char) {
       case $this->ver    : if ( (is_numeric($t2char)) ) {
                        ++$this->idx->ver;
+                       if (!isset($this->version[$this->idx->ver])) $this->version[$this->idx->ver] = new stdClass();
                        $this->idx->mark = 0;
                        $this->version[$this->idx->ver]->num = $tline;
                        return TRUE;
@@ -231,21 +233,29 @@ class histview extends hvconfig {
                      }
                      break;
       case $this->plus   : ++$this->idx->mark;
+                     if (!isset($this->version[$this->idx->ver]->changes[$this->idx->mark]))
+                      $this->version[$this->idx->ver]->changes[$this->idx->mark] = new stdClass();
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->iplus;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->cplus;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                      return TRUE; break;
       case $this->minus  : ++$this->idx->mark;
+                     if (!isset($this->version[$this->idx->ver]->changes[$this->idx->mark]))
+                      $this->version[$this->idx->ver]->changes[$this->idx->mark] = new stdClass();
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->iminus;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->cminus;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                      return TRUE; break;
       case $this->change : ++$this->idx->mark;
+                     if (!isset($this->version[$this->idx->ver]->changes[$this->idx->mark]))
+                      $this->version[$this->idx->ver]->changes[$this->idx->mark] = new stdClass();
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->ichange;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->cchange;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
                      return TRUE; break;
       case $this->bug    : ++$this->idx->mark;
+                     if (!isset($this->version[$this->idx->ver]->changes[$this->idx->mark]))
+                      $this->version[$this->idx->ver]->changes[$this->idx->mark] = new stdClass();
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->ibug;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->cbug;
                      $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
@@ -254,6 +264,8 @@ class histview extends hvconfig {
                      if (isset($this->umarks["$t1char"]) && $t2char==" ") {
                        ++$this->idx->mark;
                        $name = $this->umarks["$t1char"];
+                       if (!isset($this->version[$this->idx->ver]->changes[$this->idx->mark]))
+                        $this->version[$this->idx->ver]->changes[$this->idx->mark] = new stdClass();
                        $this->version[$this->idx->ver]->changes[$this->idx->mark]->mark = $this->umark->$name->icon;
                        $this->version[$this->idx->ver]->changes[$this->idx->mark]->class = $this->umark->$name->class;
                        $this->version[$this->idx->ver]->changes[$this->idx->mark]->content = substr($tline,1);
